@@ -1,15 +1,16 @@
+import { FC, KeyboardEvent, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import styles from './Controls.module.css'
-import { KeyboardEvent } from 'react'
 import actions from '../../store/actions/actions'
+import styles from './Controls.module.css'
 
-const Controls = () => {
+const Controls:FC = () => {
   const dispatch = useDispatch()
+  const [value, setValue] =useState('')
   
   const addItem = (e: KeyboardEvent) => {
     if(e.key !== 'Enter') return
-    dispatch(actions.addItem((e.target as HTMLInputElement).value));
-    (e.target as HTMLInputElement).value = ''
+    dispatch(actions.addItem(value))
+    setValue('')
   }
   const selectAllHandler = () => dispatch(actions.selectAll())
   
@@ -18,7 +19,7 @@ const Controls = () => {
       <button onClick={selectAllHandler}>
         <i className="fa-solid fa-check-double"></i>
       </button>
-      <input type="text" placeholder='Input task...' onKeyUp={addItem}/>
+      <input type="text" placeholder='Input task...' value={value} onChange={(e) => setValue(e.target.value)} onKeyUp={addItem}/>
     </div>
   )
 }

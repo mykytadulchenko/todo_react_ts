@@ -1,13 +1,14 @@
-import { useRef } from 'react'
+import { FC, MouseEvent, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import styles from './Filters.module.css'
 import actions from '../../store/actions/actions'
+import { IFiltersComponent } from '../../interfaces/components'
 
-const Filters = ({activeCounter, isAnyFinished}: Record<string, number | boolean>) => {
+const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
   const dispatch = useDispatch()
 
   const clearSelected = () => dispatch(actions.removeSelected())
-  const changeFilter = (e: React.MouseEvent) => {
+  const changeFilter = (e: MouseEvent) => {
     if(active.current) active.current.className = ''
     active.current = e.target as HTMLButtonElement
     dispatch(actions.setFilter(active.current.dataset.filter as string))

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, FC } from 'react'
 import Controls from '../Controls/Controls'
 import Filters from '../Filters/Filters'
 import Screen from '../Screen/Screen'
@@ -6,7 +6,7 @@ import styles from './TodoList.module.css'
 import { useSelector } from 'react-redux'
 import { filterSelector, getDataSelector } from '../../store/selectors'
 
-const TodoList = () => {
+const TodoList:FC = () => {
   const data = useSelector(getDataSelector)
   const filter = useSelector(filterSelector)
 

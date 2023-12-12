@@ -1,3 +1,5 @@
+import { IListItem } from "../../interfaces"
+
 const actions = {
     setFilter: (value: string) => ({type: 'SET_FILTER', payload: value}),
     selectAll: () => ({type: 'SELECT_ALL'}),

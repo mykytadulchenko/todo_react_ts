@@ -1,4 +1,5 @@
 import { createStore } from "redux"
+import { IAction, IListItem, IState } from "../interfaces"
 
 class Store {
     data: Array<IListItem>

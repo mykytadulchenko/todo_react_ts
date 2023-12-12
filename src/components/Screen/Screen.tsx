@@ -1,8 +1,9 @@
-import { IListItem } from '../../interfaces'
+import { FC } from 'react'
 import ListItem from '../ListItem/ListItem'
 import styles from './Screen.module.css'
+import { IScreenComponent } from '../../interfaces/components'
 
-const Screen = ({data}: {data: Array<IListItem>}) => {
+const Screen:FC<IScreenComponent> = ({data}) => {
   return (
     <ul className={styles.screen}>
       {data.map(item => 

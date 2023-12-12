@@ -1,19 +1,20 @@
-import { useMemo, useState } from "react"
+import { FC, KeyboardEvent, useMemo, useState } from "react"
 import { useDispatch } from "react-redux"
 import styles from "./ListItem.module.css"
 import actions from "../../store/actions/actions"
 import { IListItem } from "../../interfaces"
+import { IListItemComponent } from "../../interfaces/components"
 
-const ListItem = ({ itemData }: {itemData: IListItem}) => {
+const ListItem:FC<IListItemComponent> = ({ itemData }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(itemData.value)
   const dispatch = useDispatch()
 
   const checkItem = (item: IListItem) => dispatch(actions.checkItem(item))
   const removeItem = (item: IListItem) => dispatch(actions.removeItem(item))
-  const edit = (e: React.KeyboardEvent) => {
+  const edit = (e: KeyboardEvent) => {
     if (e.key !== "Enter") return
-    dispatch(actions.editItem(itemData, (e.target as HTMLInputElement).value))
+    dispatch(actions.editItem(itemData, value))
     setIsEditing(false)
   }
 

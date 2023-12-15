@@ -66,10 +66,42 @@ const actions = {
         }
       }
     }, 
+    processSelectAll: () => {
+      return async(dispatch: ThunkDispatch<IAction, any, any>, getState: () => IState) => {
+        try {
+          const response = await fetch('http://localhost:3001/bulk-select', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(getState().selectAll)
+          })
+          const newData = await response.json()
+          dispatch(actions.selectAll(newData))
+        } catch(err: any) {
+          console.log(err.message)
+        }
+      }
+    },
+    processRemoveSelected: () => {
+      return async(dispath: ThunkDispatch<IAction, any, any>) => {
+        try {
+          const response = await fetch('http://localhost:3001/bulk-remove', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          const newData = await response.json()
+          dispath(actions.setData(newData))
+        } catch(err: any) {
+          console.log(err.message)
+        }
+      }
+    },
     setData: (data: Array<IListItem>) => ({type: 'SET_DATA', payload: data}),
     setFilter: (value: string) => ({type: 'SET_FILTER', payload: value}),
-    selectAll: () => ({type: 'SELECT_ALL'}),
-    removeSelected: () => ({type: 'REMOVE_SELECTED'}),
+    selectAll: (data: Array<IListItem>) => ({type: 'SELECT_ALL', payload: data})
 }
 
 export default actions

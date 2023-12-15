@@ -1,14 +1,17 @@
 import type { FC, MouseEvent } from 'react'
 import type { IFiltersComponent } from '../../interfaces/components'
+import type { ThunkDispatch } from 'redux-thunk'
+import type { IAction } from '../../interfaces'
 import { useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import styles from './Filters.module.css'
 import actions from '../../store/actions/actions'
 
-const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
-  const dispatch = useDispatch()
 
-  const clearSelected = () => dispatch(actions.removeSelected())
+
+const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
+  const dispatch = useDispatch<ThunkDispatch<IAction, any, any>>()
+  const clearSelected = () => dispatch(actions.processRemoveSelected())
   const changeFilter = (e: MouseEvent) => {
     if(active.current) active.current.className = ''
     active.current = e.target as HTMLButtonElement

@@ -7,6 +7,27 @@ const applyCORS = (response) => {
     response.setHeader('Access-Control-Allow-Methods', '*')
 }
 
+const bulkActionHandler = (request, response) => {
+    let requestData = ''
+    const targetURL = request.url.slice(1)
+    request.on('data', chunk => requestData += chunk)
+    switch(targetURL) {
+        case 'bulk-select':
+            request.on('end', () => {
+                const status = JSON.parse(requestData)
+                db = db.map(el => ({...el, isFinished: status}))
+                response.end(JSON.stringify(db))
+            })
+            break
+        case 'bulk-remove':
+            request.on('end', () => {
+                db = db.filter(el => !el.isFinished)
+                response.end(JSON.stringify(db))
+            })
+            break
+    }
+}
+
 const serverHandler = (request, response) => {
     if(request.url === '/favicon.ico') return
     applyCORS(response)
@@ -47,6 +68,14 @@ const serverHandler = (request, response) => {
                 response.end(JSON.stringify(db))
             })
             break
+
+        case 'PUT': 
+            bulkActionHandler(request, response)
+            break
+        
+        default:
+            response.statusCode = 404
+            response.end()
     }
 }
 

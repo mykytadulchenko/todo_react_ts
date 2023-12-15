@@ -14,9 +14,8 @@ const reducer = (state: IState = initialState, action: IAction) => {
             return {...state, data: action.payload}
         case 'SET_FILTER':
             return {...state, filter: action.payload}
-        // case 'SELECT_ALL':
-        //     const selectedAllData = state.data.map(el => ({...el, isFinished: state.selectAll}))
-        //     return {...state, selectAll: !state.selectAll, data: selectedAllData}
+        case 'SELECT_ALL':
+            return {...state, data: action.payload, selectAll: !state.selectAll}
         // case 'REMOVE_SELECTED':
         //     const selectedRemovedData = state.data.filter(el => !el.isFinished)
         //     return {...state, data: selectedRemovedData}

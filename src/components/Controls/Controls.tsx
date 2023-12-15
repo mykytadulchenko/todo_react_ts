@@ -15,7 +15,7 @@ const Controls:FC = () => {
     dispatch(actions.addNewItem(value))
     setValue('')
   }
-  const selectAllHandler = () => dispatch(actions.selectAll())
+  const selectAllHandler = () => dispatch(actions.processSelectAll())
   
   return (
     <div className={styles.controls}>

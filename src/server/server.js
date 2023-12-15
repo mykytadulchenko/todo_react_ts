@@ -1,83 +1,70 @@
 let db = require('./db')
-const http = require('http')
+const express = require('express')
+const server = express()
 
-const applyCORS = (response) => {
-    response.setHeader('Access-Control-Allow-Origin', '*')
-    response.setHeader('Access-Control-Allow-Headers', '*')
-    response.setHeader('Access-Control-Allow-Methods', '*')
-}
+server.use((req, res, next) => {
+    res.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': '*',
+        'Access-Control-Allow-Headers': '*'
+    })
+    next()
+})
 
-const bulkActionHandler = (request, response) => {
+server.options('/', (request, response) => {
+    response.send()
+})
+
+server.get('/', (request, response) => {
+    response.send(JSON.stringify(db))
+})
+
+server.post('/', (request, response) => {
     let requestData = ''
-    const targetURL = request.url.slice(1)
     request.on('data', chunk => requestData += chunk)
-    switch(targetURL) {
-        case 'bulk-select':
-            request.on('end', () => {
-                const status = JSON.parse(requestData)
-                db = db.map(el => ({...el, isFinished: status}))
-                response.end(JSON.stringify(db))
-            })
-            break
-        case 'bulk-remove':
-            request.on('end', () => {
-                db = db.filter(el => !el.isFinished)
-                response.end(JSON.stringify(db))
-            })
-            break
-    }
-}
+    request.on('end', () => {
+        const newItem = {id: db.at(-1)?.id + 1 || 0, value: JSON.parse(requestData), isFinished: false}
+        db.push(newItem)
+        response.send(JSON.stringify(db))
+    })
+})
 
-const serverHandler = (request, response) => {
-    if(request.url === '/favicon.ico') return
-    applyCORS(response)
+server.patch('/', (request, response) => {
     let requestData = ''
-    switch(request.method) {
-        case 'OPTIONS': 
-            response.end();
-            break
+    request.on('data', chunk => requestData += chunk)
+    request.on('end', () => {
+        const editItem = JSON.parse(requestData)
+        const itemIndex = db.findIndex(el => el.id === editItem.id)
+        db[itemIndex] = editItem
+        response.send(JSON.stringify(db))
+    })
+})
 
-        case 'GET':
-            response.end(JSON.stringify(db))
-            break
+server.delete('/', (request, response) => {
+    let requestData = ''
+    request.on('data', chunk => requestData += chunk)
+    request.on('end', () => {
+        const removingItem = JSON.parse(requestData)
+        db = db.filter(el => el.id !== removingItem.id)
+        response.send(JSON.stringify(db))
+    })
+})
 
-        case 'POST':
-            request.on('data', chunk => requestData += chunk)
-            request.on('end', () => {
-                const newItem = {id: db.at(-1)?.id + 1 || 0, value: JSON.parse(requestData), isFinished: false}
-                db.push(newItem)
-                response.end(JSON.stringify(db))
-            })
-            break
-        
-        case 'PATCH':
-            request.on('data', chunk => requestData += chunk)
-            request.on('end', () => {
-                const editItem = JSON.parse(requestData)
-                const itemIndex = db.findIndex(el => el.id === editItem.id)
-                db[itemIndex] = editItem
-                response.end(JSON.stringify(db))
-            })
-            break
-        
-        case 'DELETE':
-            request.on('data', chunk => requestData += chunk)
-            request.on('end', () => {
-                const removingItem = JSON.parse(requestData)
-                db = db.filter(el => el.id !== removingItem.id)
-                response.end(JSON.stringify(db))
-            })
-            break
+server.put('/bulk-select', (request, response) => {
+    let requestData = ''
+    request.on('data', chunk => requestData += chunk)
+    request.on('end', () => {
+        const status = JSON.parse(requestData)
+        db = db.map(el => ({...el, isFinished: status}))
+        response.send(JSON.stringify(db))
+    })
+})
 
-        case 'PUT': 
-            bulkActionHandler(request, response)
-            break
-        
-        default:
-            response.statusCode = 404
-            response.end()
-    }
-}
+server.put('/bulk-remove', (request, response) => {
+    db = db.filter(el => !el.isFinished)
+    response.send(JSON.stringify(db))
+})
 
-const server = http.createServer(serverHandler)
-server.listen(3001)
+server.listen(3001, () => {
+    console.log('Server started')
+})

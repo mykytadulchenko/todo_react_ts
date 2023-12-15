@@ -4,7 +4,7 @@ import type { IAction, IState } from "../interfaces"
 
 export const initialState: IState = {
     data: [],
-    filter: null,
+    filter: 'All',
     selectAll: true
 }
 

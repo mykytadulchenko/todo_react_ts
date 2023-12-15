@@ -2,12 +2,10 @@ import type { FC, MouseEvent } from 'react'
 import type { IFiltersComponent } from '../../interfaces/components'
 import type { ThunkDispatch } from 'redux-thunk'
 import type { IAction } from '../../interfaces'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import styles from './Filters.module.css'
 import actions from '../../store/actions/actions'
-
-
 
 const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
   const dispatch = useDispatch<ThunkDispatch<IAction, any, any>>()
@@ -19,7 +17,11 @@ const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
     active.current.className = styles.active__btn
   }
 
-  const active = useRef<HTMLButtonElement>()
+  useEffect(() => {
+    active.current.className = styles.active__btn
+  }, [])
+
+  const active = useRef<any>()
 
   return (
     <div className={styles.footer}>
@@ -27,7 +29,7 @@ const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
         {`${activeCounter} tasks left`}
       </div>
       <div className={styles.filters}>
-        <button data-filter="All" onClick={changeFilter}>All</button>
+        <button ref={active} data-filter="All" onClick={changeFilter}>All</button>
         <button data-filter="Active" onClick={changeFilter}>Active</button>
         <button data-filter="Finished" onClick={changeFilter}>Finished</button>
       </div>

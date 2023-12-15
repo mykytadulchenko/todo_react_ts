@@ -1,101 +1,88 @@
+import axios from 'axios';
 import type { ThunkDispatch } from "redux-thunk";
-import type { IAction, IListItem, IState } from "../../interfaces"
+import type { IAction, IListItem, IState } from "../../interfaces";
 
 const actions = {
     fetchData: () => {
       return async (dispatch: ThunkDispatch<IState, any, any>) => {
         try {
-          const response = await fetch('http://localhost:3001', {
-            method: 'GET',
-          });
-          const data = await response.json();
-          dispatch(actions.setData(data));
-        } catch (error: any) {
-          console.log(error.message);
+          const response = await axios.get('http://localhost:3001')
+          dispatch(actions.setData(response.data))
+        } catch (err: any) {
+          if(axios.isAxiosError(err)) {
+            console.log(err.message)
+          }
         }
       }
     },
     addNewItem: (value: string) => {
       return async (dispatch: ThunkDispatch<IState, any, any>) => {
         try {
-          const response = await fetch('http://localhost:3001', {
-                  method: 'POST',
-                  headers: {
-                  'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(value)
+          const response = await axios.post('http://localhost:3001', value, {
+                  headers: { 'Content-Type': 'application/json' }
               })
-          const newData = await response.json()
-          dispatch(actions.setData(newData))
+          dispatch(actions.setData(response.data))
         } catch(err: any) {
-          console.log(err.message)
+          if(axios.isAxiosError(err)) {
+            console.log(err.message)
+          }
         } 
       }
     },
     editItem: (listItem: IListItem) => {
       return async (dispatch: ThunkDispatch<IState, any, any>) => {
         try {
-          const response = await fetch('http://localhost:3001', {
-                  method: 'PATCH',
-                  headers: {
-                  'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(listItem)
+          const response = await axios.patch('http://localhost:3001', listItem, {
+                  headers: { 'Content-Type': 'application/json' }
               })
-          const newData = await response.json()
-          dispatch(actions.setData(newData))
+          dispatch(actions.setData(response.data))
         } catch(err: any) {
-          console.log(err.message)
+          if(axios.isAxiosError(err)) {
+            console.log(err.message)
+          }
         } 
       }
     },
     removeItem: (listItem: IListItem) => {
       return async(dispatch: ThunkDispatch<IAction, any, any>) => {
         try {
-          const response = await fetch('http://localhost:3001/', {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(listItem)
+          const response = await axios.delete('http://localhost:3001/', {
+            headers: { 'Content-Type': 'application/json' },
+            data: listItem
           })
-          const newData = await response.json()
-          dispatch(actions.setData(newData))
+          dispatch(actions.setData(response.data))
         } catch(err: any) {
-          console.log(err.message)
+          if(axios.isAxiosError(err)) {
+            console.log(err.message)
+          }
         }
       }
     }, 
     processSelectAll: () => {
       return async(dispatch: ThunkDispatch<IAction, any, any>, getState: () => IState) => {
         try {
-          const response = await fetch('http://localhost:3001/bulk-select', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(getState().selectAll)
+          const response = await axios.put('http://localhost:3001/bulk-select', getState().selectAll, {
+            headers: { 'Content-Type': 'application/json' },
           })
-          const newData = await response.json()
-          dispatch(actions.selectAll(newData))
+          dispatch(actions.selectAll(response.data))
         } catch(err: any) {
-          console.log(err.message)
+          if(axios.isAxiosError(err)) {
+            console.log(err.message)
+          }
         }
       }
     },
     processRemoveSelected: () => {
       return async(dispath: ThunkDispatch<IAction, any, any>) => {
         try {
-          const response = await fetch('http://localhost:3001/bulk-remove', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            }
+          const response = await axios.put('http://localhost:3001/bulk-remove', null, {
+            headers: { 'Content-Type': 'application/json' }
           })
-          const newData = await response.json()
-          dispath(actions.setData(newData))
+          dispath(actions.setData(response.data))
         } catch(err: any) {
-          console.log(err.message)
+          if(axios.isAxiosError(err)) {
+            console.log(err.message)
+          }
         }
       }
     },

@@ -1,6 +1,6 @@
 import { applyMiddleware, createStore } from "redux"
-import type { IAction, IListItem, IState } from "../interfaces"
 import { thunk } from "redux-thunk"
+import type { IAction, IState } from "../interfaces"
 
 export const initialState: IState = {
     data: [],
@@ -16,9 +16,6 @@ const reducer = (state: IState = initialState, action: IAction) => {
             return {...state, filter: action.payload}
         case 'SELECT_ALL':
             return {...state, data: action.payload, selectAll: !state.selectAll}
-        // case 'REMOVE_SELECTED':
-        //     const selectedRemovedData = state.data.filter(el => !el.isFinished)
-        //     return {...state, data: selectedRemovedData}
         default: return state
     }
 }

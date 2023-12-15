@@ -1,5 +1,6 @@
 let db = require('./db')
 const express = require('express')
+const PORT = 3001
 const server = express()
 
 server.use((req, res, next) => {
@@ -16,7 +17,7 @@ server.options('/', (request, response) => {
 })
 
 server.get('/', (request, response) => {
-    response.send(JSON.stringify(db))
+    response.json(db)
 })
 
 server.post('/', (request, response) => {
@@ -25,7 +26,7 @@ server.post('/', (request, response) => {
     request.on('end', () => {
         const newItem = {id: db.at(-1)?.id + 1 || 0, value: JSON.parse(requestData), isFinished: false}
         db.push(newItem)
-        response.send(JSON.stringify(db))
+        response.json(db)
     })
 })
 
@@ -36,7 +37,7 @@ server.patch('/', (request, response) => {
         const editItem = JSON.parse(requestData)
         const itemIndex = db.findIndex(el => el.id === editItem.id)
         db[itemIndex] = editItem
-        response.send(JSON.stringify(db))
+        response.json(db)
     })
 })
 
@@ -46,7 +47,7 @@ server.delete('/', (request, response) => {
     request.on('end', () => {
         const removingItem = JSON.parse(requestData)
         db = db.filter(el => el.id !== removingItem.id)
-        response.send(JSON.stringify(db))
+        response.json(db)
     })
 })
 
@@ -56,15 +57,15 @@ server.put('/bulk-select', (request, response) => {
     request.on('end', () => {
         const status = JSON.parse(requestData)
         db = db.map(el => ({...el, isFinished: status}))
-        response.send(JSON.stringify(db))
+        response.json(db)
     })
 })
 
 server.put('/bulk-remove', (request, response) => {
     db = db.filter(el => !el.isFinished)
-    response.send(JSON.stringify(db))
+    response.json(db)
 })
 
-server.listen(3001, () => {
-    console.log('Server started')
+server.listen(PORT, () => {
+    console.log(`Server started, port: ${PORT}`)
 })

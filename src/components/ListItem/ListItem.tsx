@@ -1,20 +1,22 @@
-import { FC, KeyboardEvent, useMemo, useState } from "react"
+import type { FC, KeyboardEvent } from 'react'
+import type { ThunkDispatch } from 'redux-thunk'
+import type { IListItem, IState } from "../../interfaces"
+import type { IListItemComponent } from "../../interfaces/components"
+import { useMemo, useState } from "react"
 import { useDispatch } from "react-redux"
-import styles from "./ListItem.module.css"
 import actions from "../../store/actions/actions"
-import { IListItem } from "../../interfaces"
-import { IListItemComponent } from "../../interfaces/components"
+import styles from "./ListItem.module.css"
 
 const ListItem:FC<IListItemComponent> = ({ itemData }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(itemData.value)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<ThunkDispatch<IState, any, any>>()
 
-  const checkItem = (item: IListItem) => dispatch(actions.checkItem(item))
+  const checkItem = (item: IListItem) => dispatch(actions.editItem({...item, isFinished: !item.isFinished}))
   const removeItem = (item: IListItem) => dispatch(actions.removeItem(item))
   const edit = (e: KeyboardEvent) => {
     if (e.key !== "Enter") return
-    dispatch(actions.editItem(itemData, value))
+    dispatch(actions.editItem({...itemData, value}))
     setIsEditing(false)
   }
 

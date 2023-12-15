@@ -1,8 +1,9 @@
-import { FC, MouseEvent, useRef } from 'react'
+import type { FC, MouseEvent } from 'react'
+import type { IFiltersComponent } from '../../interfaces/components'
+import { useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import styles from './Filters.module.css'
 import actions from '../../store/actions/actions'
-import { IFiltersComponent } from '../../interfaces/components'
 
 const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
   const dispatch = useDispatch()

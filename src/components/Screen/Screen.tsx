@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import type { FC } from 'react'
+import type { IScreenComponent } from '../../interfaces/components'
 import ListItem from '../ListItem/ListItem'
 import styles from './Screen.module.css'
-import { IScreenComponent } from '../../interfaces/components'
 
 const Screen:FC<IScreenComponent> = ({data}) => {
   return (

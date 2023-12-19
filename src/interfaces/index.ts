@@ -6,7 +6,7 @@ export interface IListItem {
 
 export interface IState {
     data: Array<IListItem>
-    filter: null | string
+    filter: string
     selectAll: boolean
 }
 
@@ -14,5 +14,3 @@ export interface IAction {
     type: string
     payload?: any
 }
-
-//type IActionFunction = (item?: IListItem, value?: string) => IAction

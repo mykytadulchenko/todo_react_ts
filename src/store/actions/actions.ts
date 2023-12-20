@@ -51,7 +51,7 @@ const actions = {
     removeItem: (listItem: IListItem) => {
       return async(dispatch: ThunkDispatch<IAction, any, any>) => {
         try {
-          const response = await axiosFetch.delete(`/api/${listItem.id}`)
+          const response = await axiosFetch.delete(`/api/${listItem.id}`, { data: listItem })
           dispatch(actions.setData(response.data))
         } catch(err: any) {
           if(axios.isAxiosError(err)) {
@@ -64,7 +64,6 @@ const actions = {
       return async(dispatch: ThunkDispatch<IAction, any, any>, getState: () => IState) => {
         try {
           const response = await axiosFetch.put('/api/bulk-select', { selectAll: getState().selectAll })
-          console.log(response.data)
           dispatch(actions.selectAll(response.data))
         } catch(err: any) {
           if(axios.isAxiosError(err)) {

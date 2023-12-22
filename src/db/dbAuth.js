@@ -1,5 +1,6 @@
 import pg from 'pg'
-import envConfig from '../utils/envEnable.js'
+import { configDotenv } from 'dotenv'
+configDotenv()
 
 const pool = new pg.Pool({
     user: process.env.PG_USER,

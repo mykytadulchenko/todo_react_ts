@@ -1,5 +1,7 @@
-import type { IListItem, IState } from "../../interfaces"
+import type { IListItem, IState, IUser } from "../../interfaces"
 
-export const getDataSelector = (state: IState):Array<IListItem> => state.data
-export const selectAllSelector = (state: IState):boolean => state.selectAll
-export const filterSelector = (state: IState):string => state.filter
+export const getDataSelector = (state: IState):Array<IListItem> => state.items.data
+export const selectAllSelector = (state: IState):boolean => state.items.selectAll
+export const filterSelector = (state: IState):string => state.items.filter
+export const getAuthStatus = (state: IState):boolean => state.user.isAuth
+export const getUserSelector = (state: IState):IUser | null => state.user.currentUser

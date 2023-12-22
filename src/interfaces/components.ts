@@ -13,3 +13,10 @@ export interface IFiltersComponent {
     activeCounter: number
     isAnyFinished: boolean
 }
+
+export interface ISignupForm {
+    switchState: boolean
+    switchForm: (a: boolean) => void
+}
+
+export interface ISigninForm extends ISignupForm {}

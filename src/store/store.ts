@@ -1,26 +1,16 @@
-import { applyMiddleware, createStore } from "redux"
+import { applyMiddleware, combineReducers, createStore } from "redux"
 import { thunk } from "redux-thunk"
 import type { IAction, IState } from "../interfaces"
-import { SELECT_ALL, SET_DATA, SET_FILTER } from "./actions/actions"
+import itemReducer from "./reducers/itemReducer"
+import userReducer from "./reducers/userReducer"
 
-const initialState: IState = {
-    data: [],
-    filter: 'All',
-    selectAll: true
-}
+const rootReducer = combineReducers({user: userReducer, items: itemReducer})
 
-const reducer = (state: IState = initialState, action: IAction) => {
-    switch(action.type) {
-        case SET_DATA:
-            return {...state, data: action.payload}
-        case SET_FILTER:
-            return {...state, filter: action.payload}
-        case SELECT_ALL:
-            return {...state, data: action.payload, selectAll: !state.selectAll}
-        default: return state
-    }
-}
-
-const store = createStore(reducer, applyMiddleware(thunk))
+const store = createStore<IState, IAction>(rootReducer, applyMiddleware(thunk))
+console.log(store.getState())
 
 export default store
+
+//type orm
+//create date, update date
+//localstorage

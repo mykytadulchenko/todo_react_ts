@@ -4,19 +4,19 @@ import type { IListItem, IState } from "../../interfaces"
 import type { IListItemComponent } from "../../interfaces/components"
 import { useMemo, useState } from "react"
 import { useDispatch } from "react-redux"
-import actions from "../../store/actions/actions"
 import styles from "./ListItem.module.css"
+import asyncItemActions from '../../store/actions/itemActions'
 
 const ListItem:FC<IListItemComponent> = ({ itemData }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(itemData.value)
   const dispatch = useDispatch<ThunkDispatch<IState, any, any>>()
 
-  const checkItem = (item: IListItem) => dispatch(actions.editItem({...item, isFinished: !item.isFinished}))
-  const removeItem = (item: IListItem) => dispatch(actions.removeItem(item))
+  const checkItem = (item: IListItem) => dispatch(asyncItemActions.editItem({...item, isFinished: !item.isFinished}))
+  const removeItem = (item: IListItem) => dispatch(asyncItemActions.removeItem(item))
   const edit = (e: KeyboardEvent) => {
     if (e.key !== "Enter") return
-    dispatch(actions.editItem({...itemData, value}))
+    dispatch(asyncItemActions.editItem({...itemData, value}))
     setIsEditing(false)
   }
 

@@ -1,19 +1,21 @@
 import type { FC, MouseEvent } from 'react'
 import type { IFiltersComponent } from '../../interfaces/components'
 import type { ThunkDispatch } from 'redux-thunk'
-import type { IAction } from '../../interfaces'
+import type { IAction, IUser } from '../../interfaces'
 import { useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styles from './Filters.module.css'
-import actions from '../../store/actions/actions'
+import { getUserSelector } from '../../store/selectors'
+import asyncItemActions, { itemActions } from '../../store/actions/itemActions'
 
 const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
   const dispatch = useDispatch<ThunkDispatch<IAction, any, any>>()
-  const clearSelected = () => dispatch(actions.processRemoveSelected())
+  const user = useSelector(getUserSelector) as IUser
+  const clearSelected = () => dispatch(asyncItemActions.processRemoveSelected(user.id as string))
   const changeFilter = (e: MouseEvent) => {
     if(active.current) active.current.className = ''
     active.current = e.target as HTMLButtonElement
-    dispatch(actions.setFilter(active.current.dataset.filter as string))
+    dispatch(itemActions.setFilter(active.current.dataset.filter as string))
     active.current.className = styles.active__btn
   }
 

@@ -1,7 +1,7 @@
-import express from 'express'
-import cors from 'cors'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 import { configDotenv } from 'dotenv'
+import express from 'express'
 import itemsRouter from './itemRoutes.js'
 import usersRouter from './userRoutes.js'
 configDotenv()

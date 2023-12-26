@@ -33,7 +33,7 @@ const asyncUserActions = {
     }
   }}
 
-const userActions = {
+export const userActions = {
     setCurrentUser: (user: IUser) => ({type: SET_USER, payload: user}),
     logOut: () => ({type: LOG_OUT})
 }

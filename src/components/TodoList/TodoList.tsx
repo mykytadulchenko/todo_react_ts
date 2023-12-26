@@ -33,9 +33,11 @@ const TodoList:FC = () => {
   return (
     <div className={styles.list}>
         <Controls/>
-        <Screen data={filteredData}/>
         {data.length > 0 ?
-        <Filters activeCounter={activeCounter} isAnyFinished={data.length !== activeCounter}/>
+        <>
+          <Screen data={filteredData}/>
+          <Filters activeCounter={activeCounter} isAnyFinished={data.length !== activeCounter}/>
+        </>
         : null}
     </div>
   )

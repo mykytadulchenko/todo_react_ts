@@ -6,25 +6,42 @@ import type { IState, IUser } from '../../interfaces'
 import styles from './Controls.module.css'
 import { getUserSelector } from '../../store/selectors'
 import asyncItemActions from '../../store/actions/itemActions'
+import { userActions } from '../../store/actions/userActions'
 
 const Controls:FC = () => {
   const dispatch = useDispatch<ThunkDispatch<IState, any, any>>()
   const user = useSelector(getUserSelector) as IUser
   const [value, setValue] = useState('')
   
+  const logOutHandler = () => {
+    dispatch(userActions.logOut())
+  }
   const addItem = (e: KeyboardEvent) => {
     if(e.key !== 'Enter') return
     dispatch(asyncItemActions.addNewItem(user.id as string, value))
     setValue('')
   }
   const selectAllHandler = () => dispatch(asyncItemActions.processSelectAll(user.id as string))
+  const dateStringCreator = () => {
+    return new Intl.DateTimeFormat('en-US', {
+      dateStyle: 'full',
+    }).format(new Date())
+  }
   
   return (
-    <div className={styles.controls}>
-      <button onClick={selectAllHandler}>
-        <i className="fa-solid fa-check-double"></i>
-      </button>
-      <input type="text" placeholder='Input task...' value={value} onChange={(e) => setValue(e.target.value)} onKeyUp={addItem}/>
+    <div className={styles.container}>
+      <div className={styles.profile}>
+          <div className={styles.profile__left}><h1>Welcome back, {user.login}!</h1>
+          <p>Today is {dateStringCreator()}</p>
+        </div>
+        <button onClick={logOutHandler}>Log out</button>
+      </div>
+      <div className={styles.controls}>
+        <button onClick={selectAllHandler}>
+          <i className="fa-solid fa-check-double"></i>
+        </button>
+        <input type="text" placeholder='Input task...' value={value} onChange={(e) => setValue(e.target.value)} onKeyUp={addItem}/>
+      </div>
     </div>
   )
 }

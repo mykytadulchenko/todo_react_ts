@@ -1,5 +1,5 @@
 import type { IAction, IState, IUserState } from "../../interfaces"
-import { SET_USER } from "../actions/userActions"
+import { LOG_OUT, SET_USER } from "../actions/userActions"
 
 const userState: IUserState = {
     isAuth: false,
@@ -9,8 +9,11 @@ const userState: IUserState = {
 const userReducer = (state: IUserState = userState, action: IAction) => { 
     switch(action.type) {
         case SET_USER:
-            //localStorage.setItem('currentUser', {user: })
+            localStorage.setItem('currentUser', JSON.stringify(action.payload))
             return {...state, currentUser: action.payload, isAuth: true}
+        case LOG_OUT: 
+            localStorage.removeItem('currentUser')
+            return {...state, currentUser: null, isAuth: false}
         default: return state
     }
 }

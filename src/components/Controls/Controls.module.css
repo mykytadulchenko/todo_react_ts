@@ -1,3 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.profile {
+  display: flex;
+  justify-content: space-between;
+  align-items:flex-start;
+  padding: 5px;
+  border-radius: 8px;
+  background-color: rgba(250, 250, 250, 0.3);
+  color: #6988bf;
+}
+
+.profile h1 {
+  font-size: 1.4em;
+}
+
+.profile button {
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  color: #fafafa;
+  font-family: inherit;
+  background-color: #789cdb;
+}
+
 .controls {
   display: flex;
   gap: 5px;

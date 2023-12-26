@@ -1,11 +1,10 @@
 import express from 'express'
-import pool from '../db/dbAuth.js'
-import { itemQueries } from '../db/dbQueries.js'
+import { itemQueries } from '../db/typeorm/queries/itemQueries.js'
 
 const itemsRouter = express.Router()
 const dataRequestHandler = async (id) => {
-    const data = await pool.query(itemQueries.GET_ITEMS_QUERY, [id])
-    return data.rows
+    const data = await itemQueries.GET_ITEMS_QUERY(id)
+    return data
 }
 
 itemsRouter.options('/', (_, response, next) => {
@@ -27,7 +26,7 @@ itemsRouter.get('/:id', async (request, response, next) => {
 
 itemsRouter.post('/', async (request, response, next) => {
     try {
-        await pool.query(itemQueries.SET_ITEM_QUERY, [request.body.value, false, request.body.userId])
+        await itemQueries.SET_ITEM_QUERY(request.body.value, false, request.body.userId)
         const newData = await dataRequestHandler(request.body.userId)
         response.json(newData)
     } catch(err) {
@@ -38,7 +37,7 @@ itemsRouter.post('/', async (request, response, next) => {
 itemsRouter.patch('/:id', async (request, response, next) => {
     try {
         const {id, value, isFinished, user_id} = request.body
-        await pool.query(itemQueries.EDIT_ITEM_QUERY, [value, isFinished, id])
+        await itemQueries.EDIT_ITEM_QUERY(value, isFinished, id)
         const newData = await dataRequestHandler(user_id)
         response.json(newData)
     } catch(err) {
@@ -48,7 +47,7 @@ itemsRouter.patch('/:id', async (request, response, next) => {
 
 itemsRouter.delete('/:id', async (request, response, next) => {
     try {
-        await pool.query(itemQueries.DELETE_ITEM_QUERY, [request.body.id])
+        await itemQueries.DELETE_ITEM_QUERY(request.body.id)
         const newData = await dataRequestHandler(request.body.user_id)
         response.json(newData)
     } catch(err) {
@@ -58,7 +57,7 @@ itemsRouter.delete('/:id', async (request, response, next) => {
 
 itemsRouter.put('/bulk-select', async (request, response, next) => {
     try {
-        await pool.query(itemQueries.SELECT_ALL_QUERY, [request.body.selectAll, request.body.userId])
+        await itemQueries.SELECT_ALL_QUERY(request.body.selectAll, request.body.userId)
         const newData = await dataRequestHandler(request.body.userId)
         response.json(newData)
     } catch(err) {
@@ -68,7 +67,7 @@ itemsRouter.put('/bulk-select', async (request, response, next) => {
 
 itemsRouter.put('/bulk-remove', async (request, response, next) => {
     try {
-        await pool.query(itemQueries.DELETE_SELECTED, [request.body.userId])
+        await itemQueries.DELETE_SELECTED(request.body.userId)
         const newData = await dataRequestHandler(request.body.userId)
         response.json(newData)
     } catch(err) {

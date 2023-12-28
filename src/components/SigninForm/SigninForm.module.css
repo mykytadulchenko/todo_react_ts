@@ -8,6 +8,7 @@
     transform: translateX(0%);
     opacity: 1;
     transition: 0.6s all;
+    font-family: inherit;
 }
 
 .active {
@@ -15,48 +16,9 @@
     opacity: 0;
 }
 
-.login__form .error {
-    position: absolute;
-    bottom: -50%;
-    left: 50%;
-    width: 100%;
-    text-align: center;
-    font-size: 0.8em;
-    color: red;
-    transform: translateX(-50%);
-}
-
-.login__form input {
-    padding: 10px;
-    width: 100%;
-    border: none;
-    border-radius: 8px;
-    outline: none;
-    background-color: rgba(220, 220, 220, 0.5);
-    font-family: inherit;
-    transition: background-color 0.6s;
-}
-
-.login__form input:focus {
-    background-color: #fafafa;
-  }
-
-.login__form button {
-    align-self: center;
-    padding: 10px 25px;
-    border-radius: 8px;
-    border: none;
-    font-family: inherit;
-    color: gray;
-}
-
 .login__form p {
     align-self: center;
     color: #fafafa;
     font-size: 0.8em;
     cursor: pointer;
-}
-
-.login__form label {
-    position: relative;
 }

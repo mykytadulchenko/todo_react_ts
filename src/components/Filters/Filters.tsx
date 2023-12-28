@@ -7,36 +7,79 @@ import { useDispatch, useSelector } from 'react-redux'
 import styles from './Filters.module.css'
 import { getUserSelector } from '../../store/selectors'
 import asyncItemActions, { itemActions } from '../../store/actions/itemActions'
+import { Button, Container, styled } from '@mui/material'
+
+const FooterContainer = styled(Container)({
+  '&.MuiContainer-root': {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    width: '100%',
+    height: '25px',
+    padding: '0 5px 5px',
+    fontSize: '0.8em',
+    color: '#fafafa',
+    '& > button': {
+      textDecoration: 'underline',
+    },
+    '& button': {
+      padding: '0',
+      minWidth: '0',
+      border: 'none',
+      background: 'none',
+      fontFamily: 'inherit',
+      fontSize: '1em',
+      color: '#fafafa',
+      textTransform: 'none',
+      '&.active__btn': {
+        padding: '2px',
+        border: '1px solid #fafafa',
+        borderRadius: '4px',
+      },
+      '&:hover': {
+        background: 'none'
+      }
+    }
+  }
+})
+
+const FiltersContainer = styled(Container)({
+  '&.MuiContainer-root': {
+    alignSelf: 'center',
+    display: 'flex',
+    gap: '10px',
+    width: 'auto'
+  }
+})
 
 const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
   const dispatch = useDispatch<ThunkDispatch<IAction, any, any>>()
   const user = useSelector(getUserSelector) as IUser
   const clearSelected = () => dispatch(asyncItemActions.processRemoveSelected(user.id as string))
   const changeFilter = (e: MouseEvent) => {
-    if(active.current) active.current.className = ''
+    if(active.current) active.current.classList.remove('active__btn')
     active.current = e.target as HTMLButtonElement
     dispatch(itemActions.setFilter(active.current.dataset.filter as string))
-    active.current.className = styles.active__btn
+    active.current.classList.add('active__btn')
   }
 
   useEffect(() => {
-    active.current.className = styles.active__btn
+    active.current.classList.add('active__btn')
   }, [])
 
   const active = useRef<any>()
 
   return (
-    <div className={styles.footer}>
-      <div className={styles.taskCounter}>
-        {`${activeCounter} tasks left`}
-      </div>
-      <div className={styles.filters}>
-        <button ref={active} data-filter="All" onClick={changeFilter}>All</button>
-        <button data-filter="Active" onClick={changeFilter}>Active</button>
-        <button data-filter="Finished" onClick={changeFilter}>Finished</button>
-      </div>
-      <button className={isAnyFinished ? '' : styles.hidden} onClick={clearSelected}>Clear completed</button>
-    </div>
+    <FooterContainer>
+      <p>{`${activeCounter} tasks left`}</p>
+      <FiltersContainer>
+        <Button ref={active} data-filter="All" onClick={changeFilter}>All</Button>
+        <Button data-filter="Active" onClick={changeFilter}>Active</Button>
+        <Button data-filter="Finished" onClick={changeFilter}>Finished</Button>
+      </FiltersContainer>
+      <Button className={isAnyFinished ? '' : styles.hidden} onClick={clearSelected}>Clear completed</Button>
+    </FooterContainer>
   )
 }
 export default Filters

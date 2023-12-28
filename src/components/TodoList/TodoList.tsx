@@ -9,6 +9,25 @@ import Controls from '../Controls/Controls'
 import Filters from '../Filters/Filters'
 import Screen from '../Screen/Screen'
 import styles from './TodoList.module.css'
+import { Container, styled } from '@mui/material'
+
+const ListContainer = styled(Container)({
+  '&.MuiContainer-root': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+    padding: '10px',
+    minWidth: '320px',
+    maxWidth: '600px',
+    width: '100%',
+    maxHeight: '100%',
+    borderRadius: '16px',
+    backgroundColor: 'rgba(250, 250, 250, 0.2)',
+    backdropFilter: 'blur(20px)',
+    boxShadow: '0 10px 20px 10px rgba(84, 84, 84, 0.1)',
+    overflow: 'hidden'
+  }
+})
 
 const TodoList:FC = () => {
   const data = useSelector(getDataSelector)
@@ -31,7 +50,7 @@ const TodoList:FC = () => {
   }, [filter, data])
 
   return (
-    <div className={styles.list}>
+    <ListContainer>
         <Controls/>
         {data.length > 0 ?
         <>
@@ -39,7 +58,7 @@ const TodoList:FC = () => {
           <Filters activeCounter={activeCounter} isAnyFinished={data.length !== activeCounter}/>
         </>
         : null}
-    </div>
+    </ListContainer>
   )
 }
 

@@ -10,6 +10,15 @@
     transition: 0.6s all;
 }
 
+.signup__form label div {
+    width: 100%;
+}
+
+.signup__form > label {
+    position: relative;
+}
+
+
 .active{
     transform: translateX(0%);
     opacity: 1;
@@ -26,41 +35,9 @@
     transform: translateX(-50%);
 }
 
-.signup__form input {
-    padding: 10px;
-    width: 100%;
-    border: none;
-    border-radius: 8px;
-    outline: none;
-    background-color: rgba(220, 220, 220, 0.5);
-    font-family: inherit;
-    transition: background-color 0.6s;
-}
-
-.signup__form input:focus {
-    background-color: #fafafa;
-}
-
-.signup__form button {
-    align-self: center;
-    padding: 10px 25px;
-    border-radius: 8px;
-    border: none;
-    font-family: inherit;
-    color: gray;
-}
-
 .signup__form p {
     align-self: center;
     color: #fafafa;
     font-size: 0.8em;
     cursor: pointer;
-}
-
-.signup__form label {
-    position: relative;
-}
-
-.signup__form .invalid {
-    outline: 1px solid red;
 }

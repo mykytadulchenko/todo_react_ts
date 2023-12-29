@@ -28,13 +28,12 @@ const StyledInput = styled(TextField)({
     },
   },
   '.MuiInputLabel-root': {
-      color: '#6988bf',
-      fontFamily: 'inherit',
-      '&.Mui-focused': {
-        color: '#6988bf'
-      }
+    color: '#6988bf',
+    fontFamily: 'inherit',
+    '&.Mui-focused': {
+      color: '#6988bf'
     }
-  
+  }
 })
 
 const StyledButton = styled(Button)({

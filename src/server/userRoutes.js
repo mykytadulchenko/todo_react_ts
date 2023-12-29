@@ -1,6 +1,6 @@
 import express from 'express'
-import { userQueries } from '../db/typeorm/queries/userQueries.js'
 import bcrypt from 'bcrypt'
+import { userQueries } from '../db/queries/userQueries.js'
 
 const usersRouter = express.Router()
 

@@ -1,5 +1,5 @@
 import express from 'express'
-import { itemQueries } from '../db/typeorm/queries/itemQueries.js'
+import { itemQueries } from '../db/queries/itemQueries.js'
 
 const itemsRouter = express.Router()
 const dataRequestHandler = async (id) => {

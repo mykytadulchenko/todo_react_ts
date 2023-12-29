@@ -98,7 +98,8 @@ const Controls:FC = () => {
   const dispatch = useDispatch<ThunkDispatch<IState, any, any>>()
   const user = useSelector(getUserSelector) as IUser
   const [value, setValue] = useState('')
-  
+  const date = new Date()
+
   const logOutHandler = () => {
     dispatch(userActions.logOut())
   }
@@ -107,10 +108,9 @@ const Controls:FC = () => {
     dispatch(asyncItemActions.addNewItem(user.id as string, value))
     setValue('')
   }
-  const selectAllHandler = () => dispatch(asyncItemActions.processSelectAll(user.id as string))
-
-  const date = new Date()
-
+  const selectAllHandler = () => {
+    dispatch(asyncItemActions.processSelectAll(user.id as string))
+  }
   const dateStringCreator = () => {
     return new Intl.DateTimeFormat('en-US', {
       dateStyle: 'full',

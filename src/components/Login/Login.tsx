@@ -23,6 +23,9 @@ const TitleContainer = styled(Container)({
     flexDirection: 'column',
     alignItems: 'center',
     color: 'rgb(233, 233, 233)',
+    '& p': {
+      textAlign: 'center'
+    }
   }
 })
 

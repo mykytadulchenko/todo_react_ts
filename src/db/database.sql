@@ -18,8 +18,8 @@ create TABLE users (
 create TABLE todos (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     value VARCHAR(255),
-    "isFinished" BOOLEAN,
-    created TIMESTAMP DEFAULT current_timestamp,
-    modified TIMESTAMP DEFAULT current_timestamp,
+    completed BOOLEAN,
+    created_at TIMESTAMP DEFAULT current_timestamp, 
+    updated_at TIMESTAMP DEFAULT current_timestamp,
     user_id UUID REFERENCES users(id)
 );

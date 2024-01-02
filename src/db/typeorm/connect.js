@@ -11,7 +11,7 @@ const dbData = {
     port: process.env.PG_PORT,
     database: process.env.PG_DATABASE,
     entities: [User, Item],
-    uuidExtension: "uuid-ossp"
+    synchronize: true
 }
 
 export default dbData

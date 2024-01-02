@@ -1,13 +1,12 @@
+import { Button, Container, styled } from '@mui/material'
 import type { FC, MouseEvent } from 'react'
-import type { IFiltersComponent } from '../../interfaces/components'
-import type { ThunkDispatch } from 'redux-thunk'
-import type { IAction, IUser } from '../../interfaces'
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import styles from './Filters.module.css'
-import { getUserSelector } from '../../store/selectors'
+import type { ThunkDispatch } from 'redux-thunk'
+import type { IAction, IUser } from '../../interfaces'
+import type { IFiltersComponent } from '../../interfaces/components'
 import asyncItemActions, { itemActions } from '../../store/actions/itemActions'
-import { Button, Container, styled } from '@mui/material'
+import { getUserSelector } from '../../store/selectors'
 
 const FooterContainer = styled(Container)({
   '&.MuiContainer-root': {
@@ -22,6 +21,9 @@ const FooterContainer = styled(Container)({
     color: '#fafafa',
     '& > button': {
       textDecoration: 'underline',
+      '&.hidden': {
+        transform: 'translateY(200%)'
+      }
     },
     '& button': {
       padding: '0',
@@ -65,10 +67,13 @@ const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
   }
 
   useEffect(() => {
-    active.current.classList.add('active__btn')
-  }, [])
+    active.current!.classList.add('active__btn')
+    if(!isAnyFinished) clearSelectedBtn.current!.classList.add('hidden')
+    else clearSelectedBtn.current!.classList.remove('hidden')
+  }, [isAnyFinished])
 
-  const active = useRef<any>()
+  const active = useRef<HTMLButtonElement | null>(null)
+  const clearSelectedBtn = useRef<HTMLButtonElement | null>(null)
 
   return (
     <FooterContainer>
@@ -78,7 +83,7 @@ const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
         <Button data-filter="Active" onClick={changeFilter}>Active</Button>
         <Button data-filter="Finished" onClick={changeFilter}>Finished</Button>
       </FiltersContainer>
-      <Button className={isAnyFinished ? '' : styles.hidden} onClick={clearSelected}>Clear completed</Button>
+      <Button ref={clearSelectedBtn} onClick={clearSelected}>Clear completed</Button>
     </FooterContainer>
   )
 }

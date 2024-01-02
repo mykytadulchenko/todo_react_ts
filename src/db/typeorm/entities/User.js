@@ -6,8 +6,8 @@ const User = new EntitySchema({
         id: {
             type: "uuid",
             generated: true,
+            default: () => "uuid_generate_v4()",
             primary: true,
-            default: "uuid_generate_v4()"
         },
         login: {
             type: "varchar",

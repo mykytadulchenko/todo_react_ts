@@ -1,7 +1,7 @@
 export interface IListItem {
     id: number
     value: string
-    isFinished: boolean
+    completed: boolean
 }
 
 export interface IUserState {

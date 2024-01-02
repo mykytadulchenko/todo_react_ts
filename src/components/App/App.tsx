@@ -1,11 +1,10 @@
+import { Container, styled } from "@mui/material"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { userActions } from "../../store/actions/userActions"
 import { getAuthStatus } from "../../store/selectors"
 import LoginForm from "../Login/Login"
 import TodoList from "../TodoList/TodoList"
-import styles from "./App.module.css"
-import { Container, styled } from "@mui/material"
 
 const AppContainer = styled(Container)({
   '&.MuiContainer-root': {
@@ -17,7 +16,13 @@ const AppContainer = styled(Container)({
     height: '100vh',
     maxWidth: '100%',
     background: 'linear-gradient(to right, #83a4d4, #b6fbff)',
-    fontFamily: "'Montserrat', sans-serif"
+    fontFamily: "'Montserrat', sans-serif",
+    '& > h1': {
+      fontSize: '3em',
+      color: '#fafafa',
+      textTransform: 'uppercase',
+      textShadow: '2px 5px 5px rgba(84, 84, 84, 0.4)'
+    }
   }
   
 })
@@ -35,7 +40,7 @@ function App() {
     <AppContainer>
       {isAuth ?
       <>
-        <h1 className={styles.title}>Todo List</h1>
+        <h1>Todo List</h1>
         <TodoList />
       </>
       :

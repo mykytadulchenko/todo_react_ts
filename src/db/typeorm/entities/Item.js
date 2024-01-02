@@ -5,24 +5,24 @@ const Item = new EntitySchema({
     columns: {
         id: {
             type: "uuid",
-            primary: true,
             generated: true,
-            default: "uuid_generate_v4()"
+            default: () => "uuid_generate_v4()",
+            primary: true,
         },
         value: {
             type: "varchar",
             length: 255
         },
-        "isFinished": {
+        completed: {
             type: "boolean"
         },
-        created: {
+        created_at: {
             type: "timestamp",
-            default: "current_timestamp"
+            default: () => "current_timestamp"
         },
-        modified: {
+        updated_at: {
             type: "timestamp",
-            default: "current_timestamp"
+            default: () => "current_timestamp"
         },
         user_id: {
             type: "uuid"

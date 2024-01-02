@@ -1,11 +1,13 @@
 import express from 'express'
 import { userQueries } from '../db/typeorm/queries/userQueries.js'
 import bcrypt from 'bcrypt'
+import { configDotenv } from 'dotenv'
+configDotenv()
 
 const usersRouter = express.Router()
 
 const passwordHasher = async (password) => {
-    const saltRounds = 10
+    const saltRounds = Number(process.env.SALT_ROUNDS)
     const hash = await bcrypt.hash(password, saltRounds)
     return hash
 }

@@ -14,7 +14,7 @@ server.use(bodyParser.json())
 server.use('/api/todos', itemsRouter)
 server.use('/api/users', usersRouter)
 server.use((err, _, response, next) => {
-    console.log(err.message)
+    console.log(err)
     response.status(500).json('Something went wrong!')
 })
 

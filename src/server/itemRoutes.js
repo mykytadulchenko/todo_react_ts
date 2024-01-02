@@ -36,8 +36,8 @@ itemsRouter.post('/', async (request, response, next) => {
 
 itemsRouter.patch('/:id', async (request, response, next) => {
     try {
-        const {id, value, isFinished, user_id} = request.body
-        await itemQueries.EDIT_ITEM_QUERY(value, isFinished, id)
+        const {id, value, completed, user_id} = request.body
+        await itemQueries.EDIT_ITEM_QUERY(value, completed, id)
         const newData = await dataRequestHandler(user_id)
         response.json(newData)
     } catch(err) {

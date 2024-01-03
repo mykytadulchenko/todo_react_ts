@@ -1,12 +1,11 @@
+import { Button, Checkbox, Container, ListItem as MUIListItem, TextField, styled } from '@mui/material'
 import type { FC, KeyboardEvent } from 'react'
+import { useState } from "react"
+import { useDispatch } from "react-redux"
 import type { ThunkDispatch } from 'redux-thunk'
 import type { IListItem, IState } from "../../interfaces"
 import type { IListItemComponent } from "../../interfaces/components"
-import { useMemo, useState } from "react"
-import { useDispatch } from "react-redux"
-import styles from "./ListItem.module.css"
 import asyncItemActions from '../../store/actions/itemActions'
-import { Button, Checkbox, Container, ListItem as MUIListItem, TextField, styled } from '@mui/material'
 
 const StyledListItem = styled(MUIListItem)({
   '&.MuiListItem-root': {
@@ -96,7 +95,7 @@ const ListItem:FC<IListItemComponent> = ({ itemData }) => {
   const [value, setValue] = useState(itemData.value)
   const dispatch = useDispatch<ThunkDispatch<IState, any, any>>()
 
-  const checkItem = (item: IListItem) => dispatch(asyncItemActions.editItem({...item, isFinished: !item.isFinished}))
+  const checkItem = (item: IListItem) => dispatch(asyncItemActions.editItem({...item, completed: !item.completed}))
   const removeItem = (item: IListItem) => dispatch(asyncItemActions.removeItem(item))
   const edit = (e: KeyboardEvent) => {
     if (e.key !== "Enter") return
@@ -119,8 +118,8 @@ const ListItem:FC<IListItemComponent> = ({ itemData }) => {
         </EditContainer>
       ) : (
         <>
-          <StyledCheckbox checked={itemData.isFinished} onChange={() => checkItem(itemData)}/>
-          <p className={itemData.isFinished ? 'finished' : ''} onDoubleClick={() => setIsEditing(true)}>{itemData.value}</p>
+          <StyledCheckbox checked={itemData.completed} onChange={() => checkItem(itemData)}/>
+          <p className={itemData.completed ? 'finished' : ''} onDoubleClick={() => setIsEditing(true)}>{itemData.value}</p>
           <Button onClick={() => removeItem(itemData)}>
             <i className="fa-solid fa-xmark fa-lg"></i>
           </Button>

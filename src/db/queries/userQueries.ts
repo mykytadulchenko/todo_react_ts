@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb"
 configDotenv()
 
 export const userQueries = {
-    SET_USER_QUERY: async (login, email, password) => {
+    SET_USER_QUERY: async (login: string, email: string, password: string) => {
         await mongoClient.connect()
         const userCollection = mongoClient.db(process.env.MONGO_DB).collection('users')
         const newId = new ObjectId()
@@ -15,7 +15,7 @@ export const userQueries = {
              login
          }
     },
-    GET_USER_QUERY: async (login) => {
+    GET_USER_QUERY: async (login: string) => {
         await mongoClient.connect()
         const userCollection = mongoClient.db(process.env.MONGO_DB).collection('users')
         const user = await userCollection.findOne({ login })

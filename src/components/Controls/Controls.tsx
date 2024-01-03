@@ -1,13 +1,12 @@
+import { Button, Container, TextField, styled } from '@mui/material'
 import type { FC, KeyboardEvent } from 'react'
-import type { ThunkDispatch } from 'redux-thunk'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import type { ThunkDispatch } from 'redux-thunk'
 import type { IState, IUser } from '../../interfaces'
-import styles from './Controls.module.css'
-import { getUserSelector } from '../../store/selectors'
 import asyncItemActions from '../../store/actions/itemActions'
 import { userActions } from '../../store/actions/userActions'
-import { Button, Container, TextField, styled } from '@mui/material'
+import { getUserSelector } from '../../store/selectors'
 
 const OuterContainer = styled(Container)({
   '&.MuiContainer-root': {

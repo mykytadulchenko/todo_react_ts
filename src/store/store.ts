@@ -6,6 +6,6 @@ import userReducer from "./reducers/userReducer"
 
 const rootReducer = combineReducers({user: userReducer, items: itemReducer})
 
-const store = legacy_createStore<IState, IAction, StoreEnhancer, ThunkMiddleware>(rootReducer, applyMiddleware(thunk)) //types???
+const store = legacy_createStore<IState, IAction, StoreEnhancer, ThunkMiddleware>(rootReducer, applyMiddleware(thunk))
 
 export default store

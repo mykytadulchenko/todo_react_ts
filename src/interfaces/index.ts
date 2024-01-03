@@ -1,7 +1,10 @@
 export interface IListItem {
-    id: number
-    value: string
-    isFinished: boolean
+    id: string;
+    value: string;
+    completed: boolean;
+    created_at: string;
+    updated_at: string;
+    user_id: string;
 }
 
 export interface IUserState {

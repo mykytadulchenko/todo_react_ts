@@ -1,9 +1,8 @@
+import { Container, styled } from '@mui/material'
 import type { FC } from 'react'
 import { useState } from 'react'
 import SigninForm from '../SigninForm/SigninForm'
 import SignupForm from '../SignupForm/SignupForm'
-import styles from './Login.module.css'
-import { Container, styled } from '@mui/material'
 
 const LoginContainer = styled(Container)({
   '&.MuiContainer-root': {

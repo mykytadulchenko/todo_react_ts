@@ -5,7 +5,7 @@ export interface IScreenComponent {
 }
 
 export interface IListItemComponent {
-    key: number
+    key: string
     itemData: IListItem
 }
 

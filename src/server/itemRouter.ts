@@ -1,13 +1,14 @@
 import express from 'express'
 import { itemQueries } from '../db/typeorm/queries/itemQueries.js'
 
-const itemsRouter = express.Router()
-const dataRequestHandler = async (id) => {
+const itemRouter = express.Router()
+
+const dataRequestHandler = async (id: string) => {
     const data = await itemQueries.GET_ITEMS_QUERY(id)
     return data
 }
 
-itemsRouter.options('/', (_, response, next) => {
+itemRouter.options('/', (_, response, next) => {
     try {
         response.send()
     } catch(err) {
@@ -15,7 +16,7 @@ itemsRouter.options('/', (_, response, next) => {
     }
 })
 
-itemsRouter.get('/:id', async (request, response, next) => {
+itemRouter.get('/:id', async (request, response, next) => {
     try {
         const data = await dataRequestHandler(request.params.id)
         response.json(data)
@@ -24,7 +25,7 @@ itemsRouter.get('/:id', async (request, response, next) => {
     }
 })
 
-itemsRouter.post('/', async (request, response, next) => {
+itemRouter.post('/', async (request, response, next) => {
     try {
         await itemQueries.SET_ITEM_QUERY(request.body.value, false, request.body.userId)
         const newData = await dataRequestHandler(request.body.userId)
@@ -34,7 +35,7 @@ itemsRouter.post('/', async (request, response, next) => {
     }
 })
 
-itemsRouter.patch('/:id', async (request, response, next) => {
+itemRouter.patch('/:id', async (request, response, next) => {
     try {
         const {id, value, completed, user_id} = request.body
         await itemQueries.EDIT_ITEM_QUERY(value, completed, id)
@@ -45,7 +46,7 @@ itemsRouter.patch('/:id', async (request, response, next) => {
     }
 })
 
-itemsRouter.delete('/:id', async (request, response, next) => {
+itemRouter.delete('/:id', async (request, response, next) => {
     try {
         await itemQueries.DELETE_ITEM_QUERY(request.body.id)
         const newData = await dataRequestHandler(request.body.user_id)
@@ -55,7 +56,7 @@ itemsRouter.delete('/:id', async (request, response, next) => {
     }
 })
 
-itemsRouter.put('/bulk-select', async (request, response, next) => {
+itemRouter.put('/bulk-select', async (request, response, next) => {
     try {
         await itemQueries.SELECT_ALL_QUERY(request.body.selectAll, request.body.userId)
         const newData = await dataRequestHandler(request.body.userId)
@@ -65,7 +66,7 @@ itemsRouter.put('/bulk-select', async (request, response, next) => {
     }
 })
 
-itemsRouter.put('/bulk-remove', async (request, response, next) => {
+itemRouter.put('/bulk-remove', async (request, response, next) => {
     try {
         await itemQueries.DELETE_SELECTED(request.body.userId)
         const newData = await dataRequestHandler(request.body.userId)
@@ -76,4 +77,4 @@ itemsRouter.put('/bulk-remove', async (request, response, next) => {
 })
 
 
-export default itemsRouter
+export default itemRouter

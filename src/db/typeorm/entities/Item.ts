@@ -18,7 +18,7 @@ class Item {
     @UpdateDateColumn({type: "timestamp"})
     updated_at: Date
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, (user) => user.item)
     @JoinColumn({name: 'user_id'})
     user: User
 }

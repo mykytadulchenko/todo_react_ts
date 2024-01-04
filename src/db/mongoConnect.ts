@@ -1,7 +1,10 @@
 import { configDotenv } from "dotenv";
 import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 configDotenv()
 
-const mongoClient = new MongoClient(process.env.MONGO_URI as string)
+const mongooseConnect = async () => {
+   await mongoose.connect(`${process.env.MONGO_URI}/${process.env.MONGO_DB}`)
+}
 
-export default mongoClient
+export default mongooseConnect

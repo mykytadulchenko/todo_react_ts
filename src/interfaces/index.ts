@@ -1,5 +1,5 @@
 export interface IListItem {
-    id: string;
+    _id: string;
     value: string;
     completed: boolean;
     created_at: string;

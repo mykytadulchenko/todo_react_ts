@@ -36,7 +36,7 @@ const asyncItemActions = {
     editItem: (listItem: IListItem) => {
       return async (dispatch: ThunkDispatch<IState, IListItem, IAction>) => {
         try {
-          const response = await axiosResolver.patch(`${PATH}/${listItem.id}`, listItem)
+          const response = await axiosResolver.patch(`${PATH}/${listItem._id}`, listItem)
           dispatch(itemActions.setData(response.data))
         } catch(err: any) {
           if(axios.isAxiosError(err)) {
@@ -48,7 +48,7 @@ const asyncItemActions = {
     removeItem: (listItem: IListItem) => {
       return async(dispatch: ThunkDispatch<IState, IListItem, IAction>) => {
         try {
-          const response = await axiosResolver.delete(`${PATH}/${listItem.id}`, { data: listItem })
+          const response = await axiosResolver.delete(`${PATH}/${listItem._id}`, { data: listItem })
           dispatch(itemActions.setData(response.data))
         } catch(err: any) {
           if(axios.isAxiosError(err)) {

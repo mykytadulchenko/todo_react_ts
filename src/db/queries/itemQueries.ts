@@ -1,53 +1,43 @@
 import { configDotenv } from "dotenv"
-import mongoClient from "../mongoConnect.js"
 import { ObjectId } from "mongodb"
+import mongoose from "mongoose"
+import Item from "../models/itemModel.js"
+import mongooseConnect from "../mongoConnect.js"
 configDotenv()
 
 export const itemQueries = {
     GET_ITEMS_QUERY: async (id: string) => {
-        await mongoClient.connect()
-        const itemCollection = mongoClient.db(process.env.MONGO_DB).collection('items')
-        let data = await itemCollection.find({ user_id: new ObjectId(id) }).toArray()
-        await mongoClient.close()
+        await mongooseConnect()
+        let data = await Item.find({ user_id: new ObjectId(id) })
+        await mongoose.connection.close()
         return data
     },
     SET_ITEM_QUERY: async (value: string, completed: boolean, user_id: string) => {
-        await mongoClient.connect()
-        const itemCollection = mongoClient.db(process.env.MONGO_DB).collection('items')
-        const newId = new ObjectId()
-        const creationDate = new Date()
-        const newItem = {_id: newId, 
-                        id: newId, 
-                        value, 
+        await mongooseConnect()
+        const newItem = {value, 
                         completed, 
-                        user_id: new ObjectId(user_id), 
-                        created: creationDate, 
-                        modified: creationDate}
-        await itemCollection.insertOne(newItem)
-        await mongoClient.close()
+                        user_id: new ObjectId(user_id)}
+        await Item.create(newItem)
+        await mongoose.connection.close()
     },
     EDIT_ITEM_QUERY: async (value: string, completed: boolean, id: string) => {
-        await mongoClient.connect()
-        const itemCollection = mongoClient.db(process.env.MONGO_DB).collection('items')
-        await itemCollection.updateOne({ id: new ObjectId(id) }, { $set: { value, completed , modified: new Date() } })
-        await mongoClient.close()
+        await mongooseConnect()
+        await Item.updateOne({ _id: new ObjectId(id) }, { $set: { value, completed } })
+        await mongoose.connection.close()
     },
     DELETE_ITEM_QUERY: async (id: string) => {
-        await mongoClient.connect()
-        const itemCollection = mongoClient.db(process.env.MONGO_DB).collection('items')
-        await itemCollection.deleteOne({ id: new ObjectId(id) })
-        await mongoClient.close()
+        await mongooseConnect()
+        await Item.deleteOne({ _id: new ObjectId(id) })
+        await mongoose.connection.close()
     },
     SELECT_ALL_QUERY: async (selectAll: boolean, user_id: string) => {
-        await mongoClient.connect()
-        const itemCollection = mongoClient.db(process.env.MONGO_DB).collection('items')
-        await itemCollection.updateMany({ user_id: new ObjectId(user_id) }, { $set: { completed: selectAll } })
-        await mongoClient.close()
+        await mongooseConnect()
+        await Item.updateMany({ user_id: new ObjectId(user_id) }, { $set: { completed: selectAll } })
+        await mongoose.connection.close()
     },
     DELETE_SELECTED: async (user_id: string) => {
-        await mongoClient.connect()
-        const itemCollection = mongoClient.db(process.env.MONGO_DB).collection('items')
-        await itemCollection.deleteMany({ user_id: new ObjectId(user_id) })
-        await mongoClient.close()
+        await mongooseConnect()
+        await Item.deleteMany({ user_id: new ObjectId(user_id) })
+        await mongoose.connection.close()
     }
 }

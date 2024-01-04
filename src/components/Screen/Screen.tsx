@@ -19,7 +19,7 @@ const Screen:FC<IScreenComponent> = ({data}) => {
   return (
     <ItemList>
       {data.map(item => 
-        <ListItem key={item.id} itemData={item}/>
+        <ListItem key={item._id} itemData={item}/>
       )}
     </ItemList>
   )

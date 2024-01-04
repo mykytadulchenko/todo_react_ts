@@ -4,7 +4,7 @@ import type { SubmitHandler } from 'react-hook-form'
 import styles from './SignupForm.module.css'
 import { useMemo, type FC } from "react"
 import type { ISignupForm } from "../../interfaces/components"
-import type { IAction, ISignup } from "../../interfaces"
+import type { IAction, ISignup, IState } from "../../interfaces"
 import { useDispatch } from "react-redux"
 import type { ThunkDispatch } from "redux-thunk"
 import validationSignUpSchema from "../../yup/schemes/validationSignUp"
@@ -53,7 +53,7 @@ const StyledButton = styled(Button)({
 })
 
 const SignupForm:FC<ISignupForm> = ({switchState, switchForm}) => {
-  const dispatch = useDispatch<ThunkDispatch<IAction, any, any>>()
+  const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
   const rootClass = useMemo(() => switchState ? [styles.signup__form, styles.active] : [styles.signup__form], [switchState])
   const {register, handleSubmit, reset, formState: {errors}} = useForm<ISignup>({
     resolver: yupResolver(validationSignUpSchema)

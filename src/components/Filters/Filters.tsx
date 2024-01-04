@@ -1,24 +1,31 @@
-import { Button, Container, styled } from '@mui/material'
+import { Button, Container, TableCell, TableRow, styled } from '@mui/material'
 import type { FC, MouseEvent } from 'react'
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { ThunkDispatch } from 'redux-thunk'
-import type { IAction, IUser } from '../../interfaces'
+import type { IAction, IState, IUser } from '../../interfaces'
 import type { IFiltersComponent } from '../../interfaces/components'
 import asyncItemActions, { itemActions } from '../../store/actions/itemActions'
 import { getUserSelector } from '../../store/selectors'
 
-const FooterContainer = styled(Container)({
-  '&.MuiContainer-root': {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    width: '100%',
-    height: '25px',
-    padding: '0 5px 5px',
-    fontSize: '0.8em',
-    color: '#fafafa',
+const StyledTableCell = styled(TableCell)({
+  '&.MuiTableCell-root': {
+    padding: '5px',
+    minWidth: '110px',
+    whiteSpace: 'nowrap',
+    border: 'none',
+    textAlign: 'center',
+    fontFamily: 'Montserrat',
+    fontSize: '0.9em',
+    '&:nth-of-type(1)': {
+      textAlign: 'left'
+    },
+    '&:nth-of-type(3)': {
+      textAlign: 'right'
+    },
+    '& p': {
+      color: '#fafafa',
+    },
     '& > button': {
       textDecoration: 'underline',
       '&.hidden': {
@@ -48,15 +55,15 @@ const FooterContainer = styled(Container)({
 
 const FiltersContainer = styled(Container)({
   '&.MuiContainer-root': {
-    alignSelf: 'center',
     display: 'flex',
+    justifyContent: 'center',
+    padding: '0',
     gap: '10px',
-    width: 'auto'
-  }
+  },
 })
 
 const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
-  const dispatch = useDispatch<ThunkDispatch<IAction, any, any>>()
+  const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
   const user = useSelector(getUserSelector) as IUser
   const clearSelected = () => dispatch(asyncItemActions.processRemoveSelected(user.id as string))
   const changeFilter = (e: MouseEvent) => {
@@ -76,15 +83,21 @@ const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
   const clearSelectedBtn = useRef<HTMLButtonElement | null>(null)
 
   return (
-    <FooterContainer>
-      <p>{`${activeCounter} tasks left`}</p>
-      <FiltersContainer>
-        <Button ref={active} data-filter="All" onClick={changeFilter}>All</Button>
-        <Button data-filter="Active" onClick={changeFilter}>Active</Button>
-        <Button data-filter="Finished" onClick={changeFilter}>Finished</Button>
-      </FiltersContainer>
-      <Button ref={clearSelectedBtn} onClick={clearSelected}>Clear completed</Button>
-    </FooterContainer>
+    <TableRow>
+      <StyledTableCell colSpan={2}>
+        <p>{`${activeCounter} tasks left`}</p>
+      </StyledTableCell>
+      <StyledTableCell>
+        <FiltersContainer>
+          <Button ref={active} data-filter="All" onClick={changeFilter}>All</Button>
+          <Button data-filter="Active" onClick={changeFilter}>Active</Button>
+          <Button data-filter="Finished" onClick={changeFilter}>Finished</Button>
+        </FiltersContainer>
+      </StyledTableCell>
+      <StyledTableCell colSpan={3}>
+        <Button ref={clearSelectedBtn} onClick={clearSelected}>Clear completed</Button>
+      </StyledTableCell>
+    </TableRow>
   )
 }
 export default Filters

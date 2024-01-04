@@ -1,8 +1,7 @@
 import { configDotenv } from "dotenv"
-import { ObjectId } from "mongodb"
-import mongooseConnect from "../mongoConnect.js"
 import mongoose from "mongoose"
 import User from "../models/userModel.js"
+import mongooseConnect from "../mongoConnect.js"
 configDotenv()
 
 export const userQueries = {

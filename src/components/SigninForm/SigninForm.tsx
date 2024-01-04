@@ -3,7 +3,7 @@ import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import type { ThunkDispatch } from "redux-thunk"
-import { IAction, ISignin } from "../../interfaces"
+import { IAction, ISignin, IState } from "../../interfaces"
 import type { ISigninForm } from "../../interfaces/components"
 import styles from './SigninForm.module.css'
 import asyncUserActions from "../../store/actions/userActions"
@@ -49,7 +49,7 @@ const StyledButton = styled(Button)({
 })
 
 const SigninForm:FC<ISigninForm> = ({switchState, switchForm}) => {
-  const dispatch = useDispatch<ThunkDispatch<IAction, any, any>>()
+  const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
   const {handleSubmit, register, reset} = useForm<ISignin>()
   const rootClass = useMemo(() => switchState ? [styles.login__form, styles.active] : [styles.login__form], [switchState])
   const processSignIn:SubmitHandler<ISignin> = (data) => {

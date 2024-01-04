@@ -1,63 +1,35 @@
-import { Button, Container, TextField, styled } from '@mui/material'
+import { Button, Container, TableCell, TableRow, TextField, styled } from '@mui/material'
 import type { FC, KeyboardEvent } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { ThunkDispatch } from 'redux-thunk'
-import type { IState, IUser } from '../../interfaces'
+import type { IAction, IState, IUser } from '../../interfaces'
 import asyncItemActions from '../../store/actions/itemActions'
-import { userActions } from '../../store/actions/userActions'
 import { getUserSelector } from '../../store/selectors'
 
-const OuterContainer = styled(Container)({
-  '&.MuiContainer-root': {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '5px',
-    padding: '0'
-  }
-})
-
-const ProfileContainer = styled(Container)({
-  '&.MuiContainer-root': {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-    padding: '5px',
-    borderRadius: '8px',
-    backgroundColor: 'rgba(250, 250, 250, 0.3)',
-    color: '#6988bf',
-    '& h1': {
-      fontSize: '1.4em',
-      flexGrow: '1'
-    },
+const StyledTableRow = styled(TableRow)({
+  '&.MuiTableRow-root': {
     '& button': {
-      border: 'none',
-      borderRadius: '6px',
-      padding: '5px 10px',
-      color: '#fafafa',
-      fontFamily: 'inherit',
-      backgroundColor: '#789cdb',
-    },
-    '& p': {
-      width: '100%'
-    }
-  }
-})
-
-const ControlsContainer = styled(Container)({
-  '&.MuiContainer-root': {
-    display: 'flex',
-    gap: '5px',
-    padding: 0,
-    '& button': {
-      minWidth: '0',
-      padding: '0 10px',
+      minWidth: '40px',
+      padding: '0',
       border: 'none',
       background: 'none',
       fontSize: 'inherit',
       color: '#6988bf',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      
+    }
+  }
+})
+
+const StyledTableCell = styled(TableCell)({
+  '&.MuiTableCell-root': {
+    padding: '0',
+    border: '0',
+    textAlign: 'center',
+    '&:nth-of-type(1)': {
+      maxWidth: '40px',
+      width: '40px'
     }
   }
 })
@@ -91,17 +63,12 @@ const InputTask = styled(TextField)({
     },
   }
 })
-  
 
 const Controls:FC = () => {
-  const dispatch = useDispatch<ThunkDispatch<IState, any, any>>()
+  const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
   const user = useSelector(getUserSelector) as IUser
   const [value, setValue] = useState('')
-  const date = new Date()
-
-  const logOutHandler = () => {
-    dispatch(userActions.logOut())
-  }
+  
   const addItem = (e: KeyboardEvent) => {
     if(e.key !== 'Enter') return
     dispatch(asyncItemActions.addNewItem(user.id as string, value))
@@ -110,34 +77,18 @@ const Controls:FC = () => {
   const selectAllHandler = () => {
     dispatch(asyncItemActions.processSelectAll(user.id as string))
   }
-  const dateStringCreator = () => {
-    return new Intl.DateTimeFormat('en-US', {
-      dateStyle: 'full',
-    }).format(date)
-  }
-
-  const responsiveGreeting = (date: Date) => {
-    const hours = date.getHours()
-    if(hours >= 4 && hours < 12) return 'Good morning'
-    else if(hours >= 12 && hours < 16) return 'Good day'
-    else if(hours >= 16 && hours < 24) return 'Good evening'
-    else if(hours <= 0  && hours < 4) return 'Good night'
-  }
 
   return (
-    <OuterContainer>
-      <ProfileContainer>
-        <h1>{responsiveGreeting(date)}, {user.login}!</h1>
-        <Button onClick={logOutHandler}>Log out</Button>
-        <p>Today is {dateStringCreator()}</p>
-      </ProfileContainer>
-      <ControlsContainer>
+    <StyledTableRow>
+      <StyledTableCell>
         <Button onClick={selectAllHandler}>
-          <i className="fa-solid fa-check-double"></i>
+          <i className="fa-solid fa-check-double fa-lg"></i>
         </Button>
+      </StyledTableCell>
+      <StyledTableCell colSpan={5}>
         <InputTask type="text" size="small" placeholder='Input task...' value={value} onChange={(e) => setValue(e.target.value)} onKeyUp={addItem}/>
-      </ControlsContainer>
-    </OuterContainer>
+      </StyledTableCell>
+    </StyledTableRow>
   )
 }
 export default Controls

@@ -37,8 +37,8 @@ itemRouter.post('/', async (request, response, next) => {
 
 itemRouter.patch('/:id', async (request, response, next) => {
     try {
-        const {id, value, completed, user_id} = request.body
-        await itemQueries.EDIT_ITEM_QUERY(value, completed, id)
+        const {_id, value, completed, user_id} = request.body
+        await itemQueries.EDIT_ITEM_QUERY(value, completed, _id)
         const newData = await dataRequestHandler(user_id)
         response.json(newData)
     } catch(err) {
@@ -48,7 +48,7 @@ itemRouter.patch('/:id', async (request, response, next) => {
 
 itemRouter.delete('/:id', async (request, response, next) => {
     try {
-        await itemQueries.DELETE_ITEM_QUERY(request.body.id)
+        await itemQueries.DELETE_ITEM_QUERY(request.body._id)
         const newData = await dataRequestHandler(request.body.user_id)
         response.json(newData)
     } catch(err) {

@@ -17,11 +17,9 @@ const ItemList = styled(List)({
 
 const Screen:FC<IScreenComponent> = ({data}) => {
   return (
-    <ItemList>
-      {data.map(item => 
+      data.map(item => 
         <ListItem key={item._id} itemData={item}/>
-      )}
-    </ItemList>
+      )
   )
 }
 export default Screen

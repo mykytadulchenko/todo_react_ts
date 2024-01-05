@@ -59,7 +59,7 @@ const TodoList:FC = () => {
 
   return (
     <LayoutContainer>
-      <StyledTable>
+      <StyledTable stickyHeader>
         <TableHead>
           <Controls/>
         </TableHead>

@@ -12,13 +12,18 @@ const StyledTableCell = styled(TableCell)({
   '&.MuiTableCell-root': {
     padding: '5px',
     minWidth: '110px',
+    height: '42px',
     whiteSpace: 'nowrap',
     border: 'none',
     textAlign: 'center',
+    verticalAlign: 'center',
     fontFamily: 'Montserrat',
     fontSize: '0.9em',
     '&:nth-of-type(1)': {
       textAlign: 'left'
+    },
+    '&:nth-of-type(2)': {
+      width: '100%',
     },
     '&:nth-of-type(3)': {
       textAlign: 'right'
@@ -57,8 +62,9 @@ const FiltersContainer = styled(Container)({
   '&.MuiContainer-root': {
     display: 'flex',
     justifyContent: 'center',
-    padding: '0',
+    alignItems: 'center',
     gap: '10px',
+    width: '100%',
   },
 })
 

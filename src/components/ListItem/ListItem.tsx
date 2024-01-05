@@ -1,4 +1,4 @@
-import { Button, Checkbox, Container, ListItem as MUIListItem, TableCell, TableRow, TextField, styled } from '@mui/material'
+import { Button, Checkbox, Container, ListItem as MUIListItem, TableCell, TableRow, TextField, Typography, styled } from '@mui/material'
 import type { FC, KeyboardEvent } from 'react'
 import { useState } from "react"
 import { useDispatch } from "react-redux"
@@ -17,8 +17,12 @@ const StyledTableRow = styled(TableRow)({
 
 const StyledTableCell = styled(TableCell)({
   '&.MuiTableCell-root': {
-    padding: '10px 15px',
+    padding: '10px 0',
     border: 'none',
+    height: '46px',
+    '&:nth-of-type(1)': {
+      paddingLeft: '10px'
+    },
     '&:nth-of-type(3)': {
       width: '30px',
     },
@@ -55,7 +59,7 @@ const StyledTableCell = styled(TableCell)({
 const StyledCheckbox = styled(Checkbox)({
   '&.MuiCheckbox-root': {
     padding: '0',
-    minWidth: '18px',
+    width: '18px',
     '& .MuiSvgIcon-root': {
       fill: '#6988bf',
       width: '100%',
@@ -64,15 +68,17 @@ const StyledCheckbox = styled(Checkbox)({
   }
 })
 
-const EditContainer = styled(Container)({
-  '&.MuiContainer-root': {
-    padding: '0',
+const EditTableCell = styled(TableCell)({
+  '&.MuiTableCell-root': {
+    padding: '9px',
+    border: 'none',
+    height: '46px'
   }
 })
 
 const StyledInput = styled(TextField)({
   '&': {
-    width: '100%'
+    width: '100%',
   },
   '& .MuiInputBase-root': {
     border: 'none',
@@ -107,7 +113,7 @@ const ListItem:FC<IListItemComponent> = ({ itemData }) => {
   return (
    <StyledTableRow>
       {isEditing ? (
-        <TableCell>
+        <EditTableCell colSpan={6}>
           <StyledInput
             type="text"
             autoFocus
@@ -116,14 +122,14 @@ const ListItem:FC<IListItemComponent> = ({ itemData }) => {
             onChange={(e) => setValue(e.target.value)}
             onBlur={() => setIsEditing(false)}
           />
-        </TableCell>
+        </EditTableCell>
       ) : (
         <>
           <StyledTableCell>
             <StyledCheckbox checked={itemData.completed} onChange={() => checkItem(itemData)}/>
           </StyledTableCell>
           <StyledTableCell colSpan={4}>
-            <p className={itemData.completed ? 'finished' : ''} onDoubleClick={() => setIsEditing(true)}>{itemData.value}</p>
+            <Typography variant='body1' className={itemData.completed ? 'finished' : ''} onDoubleClick={() => setIsEditing(true)}>{itemData.value}</Typography>
           </StyledTableCell>
           <StyledTableCell>
             <Button onClick={() => removeItem(itemData)}>

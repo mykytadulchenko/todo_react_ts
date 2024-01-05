@@ -17,7 +17,6 @@ const StyledTableRow = styled(TableRow)({
       fontSize: 'inherit',
       color: '#6988bf',
       cursor: 'pointer',
-      
     }
   }
 })
@@ -25,8 +24,10 @@ const StyledTableRow = styled(TableRow)({
 const StyledTableCell = styled(TableCell)({
   '&.MuiTableCell-root': {
     padding: '0',
+    paddingBottom: '10px',
     border: '0',
     textAlign: 'center',
+    backgroundColor: 'transparent',
     '&:nth-of-type(1)': {
       maxWidth: '40px',
       width: '40px'

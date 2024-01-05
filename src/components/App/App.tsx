@@ -1,4 +1,4 @@
-import { Button, Container, styled } from "@mui/material"
+import { Button, Container, Typography, styled } from "@mui/material"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { userActions } from "../../store/actions/userActions"
@@ -19,7 +19,8 @@ const AppContainer = styled(Container)({
     maxWidth: '100%',
     background: 'linear-gradient(to right, #83a4d4, #b6fbff)',
     fontFamily: "'Montserrat', sans-serif",
-    '& > h1': {
+    '& > h2': {
+      fontFamily: 'inherit',
       fontSize: '3em',
       color: '#fafafa',
       textTransform: 'uppercase',
@@ -39,7 +40,12 @@ const ProfileContainer = styled(Container)({
     borderRadius: '8px',
     backgroundColor: 'rgba(250, 250, 250, 0.3)',
     color: '#6988bf',
+    fontFamily: 'Montserrat',
     '& h1': {
+      fontFamily: 'inherit',
+      fontSize: '1.2em'
+    },
+    '& h1:nth-of-type(2)': {
       textAlign: 'right',
       fontSize: '1.4em',
       flexGrow: '1'
@@ -91,11 +97,11 @@ function App() {
       {isAuth ?
       <>
         <ProfileContainer>
-          <p>Today is {dateStringCreator()}</p>
-          <h1>{responsiveGreeting(date)}, {user.login}!</h1>
+          <Typography variant="h1">Today is {dateStringCreator()}</Typography>
+          <Typography variant="h1">{responsiveGreeting(date)}, {user.login} !</Typography>
           <Button onClick={logOutHandler}>Log out</Button>
         </ProfileContainer>
-        <h1>Todo List</h1>
+        <Typography variant="h2">Todo List</Typography>
         <TodoList />
       </>
       :

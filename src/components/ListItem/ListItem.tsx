@@ -17,14 +17,12 @@ const StyledTableRow = styled(TableRow)({
 
 const StyledTableCell = styled(TableCell)({
   '&.MuiTableCell-root': {
-    padding: '10px 0',
+    padding: '10px',
     border: 'none',
     height: '46px',
-    '&:nth-of-type(1)': {
-      paddingLeft: '10px'
-    },
-    '&:nth-of-type(3)': {
-      width: '30px',
+    '&:nth-of-type(2)': {
+      padding: '10px 0',
+      width: '100%'
     },
     '& p': {
       fontSize: '1.2em',
@@ -59,7 +57,7 @@ const StyledTableCell = styled(TableCell)({
 const StyledCheckbox = styled(Checkbox)({
   '&.MuiCheckbox-root': {
     padding: '0',
-    width: '18px',
+    minWidth: '18px',
     '& .MuiSvgIcon-root': {
       fill: '#6988bf',
       width: '100%',
@@ -71,6 +69,7 @@ const StyledCheckbox = styled(Checkbox)({
 const EditTableCell = styled(TableCell)({
   '&.MuiTableCell-root': {
     padding: '9px',
+    width: '100%',
     border: 'none',
     height: '46px'
   }
@@ -113,7 +112,7 @@ const ListItem:FC<IListItemComponent> = ({ itemData }) => {
   return (
    <StyledTableRow>
       {isEditing ? (
-        <EditTableCell colSpan={6}>
+        <EditTableCell colSpan={3}>
           <StyledInput
             type="text"
             autoFocus
@@ -128,7 +127,7 @@ const ListItem:FC<IListItemComponent> = ({ itemData }) => {
           <StyledTableCell>
             <StyledCheckbox checked={itemData.completed} onChange={() => checkItem(itemData)}/>
           </StyledTableCell>
-          <StyledTableCell colSpan={4}>
+          <StyledTableCell>
             <Typography variant='body1' className={itemData.completed ? 'finished' : ''} onDoubleClick={() => setIsEditing(true)}>{itemData.value}</Typography>
           </StyledTableCell>
           <StyledTableCell>

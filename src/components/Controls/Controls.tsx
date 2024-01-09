@@ -7,30 +7,28 @@ import type { IAction, IState, IUser } from '../../interfaces'
 import asyncItemActions from '../../store/actions/itemActions'
 import { getUserSelector } from '../../store/selectors'
 
-const StyledTableRow = styled(TableRow)({
-  '&.MuiTableRow-root': {
+const OuterContainer = styled(Container)({
+  '&.MuiContainer-root': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '5px',
+    padding: '10px 0'
+  }
+})
+
+const ControlsContainer = styled(Container)({
+  '&.MuiContainer-root': {
+    display: 'flex',
+    gap: '5px',
+    padding: 0,
     '& button': {
-      minWidth: '40px',
-      padding: '0',
+      minWidth: '0',
+      padding: '0 10px',
       border: 'none',
       background: 'none',
       fontSize: 'inherit',
       color: '#6988bf',
-      cursor: 'pointer',
-    }
-  }
-})
-
-const StyledTableCell = styled(TableCell)({
-  '&.MuiTableCell-root': {
-    padding: '0',
-    paddingBottom: '10px',
-    border: '0',
-    textAlign: 'center',
-    backgroundColor: 'transparent',
-    '&:nth-of-type(1)': {
-      maxWidth: '40px',
-      width: '40px'
+      cursor: 'pointer'
     }
   }
 })
@@ -64,6 +62,7 @@ const InputTask = styled(TextField)({
     },
   }
 })
+  
 
 const Controls:FC = () => {
   const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
@@ -80,16 +79,14 @@ const Controls:FC = () => {
   }
 
   return (
-    <StyledTableRow>
-      <StyledTableCell>
+    <OuterContainer>
+      <ControlsContainer>
         <Button onClick={selectAllHandler}>
           <i className="fa-solid fa-check-double fa-lg"></i>
         </Button>
-      </StyledTableCell>
-      <StyledTableCell colSpan={5}>
         <InputTask type="text" size="small" placeholder='Input task...' value={value} onChange={(e) => setValue(e.target.value)} onKeyUp={addItem}/>
-      </StyledTableCell>
-    </StyledTableRow>
+      </ControlsContainer>
+    </OuterContainer>
   )
 }
 export default Controls

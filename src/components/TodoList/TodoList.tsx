@@ -1,4 +1,4 @@
-import { Container, Table, TableBody, TableFooter, TableHead, styled } from '@mui/material'
+import { Container, Table, TableBody, TableContainer, TableFooter, TableHead, styled } from '@mui/material'
 import type { FC } from 'react'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,8 +14,7 @@ const LayoutContainer = styled(Container)({
   '&.MuiContainer-root': {
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
-    padding: '0',
+    padding: '0 10px',
     minWidth: '320px',
     maxWidth: '600px',
     width: '100%',
@@ -30,7 +29,6 @@ const LayoutContainer = styled(Container)({
 
 const StyledTable = styled(Table)({
   '&.MuiTable-root': {
-    marginBottom: '-10px',
     width: '100%',
     borderCollapse: 'separate', 
     borderSpacing: '10px'
@@ -59,25 +57,23 @@ const TodoList:FC = () => {
 
   return (
     <LayoutContainer>
-      <StyledTable stickyHeader>
-        <TableHead>
-          <Controls/>
-        </TableHead>
+      <Controls/>
+      <TableContainer>
+      <StyledTable>
         <TableBody>
-        {data.length > 0 
-        ?
-        <Screen data={filteredData}/>
-        : null}
-        </TableBody>
-        <TableFooter>
-          {data.length > 0
+          {data.length > 0 
           ?
-          <Filters activeCounter={activeCounter} isAnyFinished={data.length !== activeCounter}/>
-          :
-          null
-          }
-        </TableFooter>
+          <Screen data={filteredData}/>
+          : null}
+        </TableBody>
       </StyledTable>
+      </TableContainer>
+    {data.length > 0
+    ?
+    <Filters activeCounter={activeCounter} isAnyFinished={data.length !== activeCounter}/>
+    :
+    null
+    }
     </LayoutContainer>
   )
 }

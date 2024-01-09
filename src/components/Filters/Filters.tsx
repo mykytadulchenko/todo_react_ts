@@ -1,4 +1,4 @@
-import { Button, Container, TableCell, TableRow, styled } from '@mui/material'
+import { Button, Container, styled } from '@mui/material'
 import type { FC, MouseEvent } from 'react'
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,29 +8,16 @@ import type { IFiltersComponent } from '../../interfaces/components'
 import asyncItemActions, { itemActions } from '../../store/actions/itemActions'
 import { getUserSelector } from '../../store/selectors'
 
-const StyledTableCell = styled(TableCell)({
-  '&.MuiTableCell-root': {
-    padding: '5px',
-    minWidth: '110px',
-    height: '42px',
-    whiteSpace: 'nowrap',
-    border: 'none',
-    textAlign: 'center',
-    verticalAlign: 'center',
-    fontFamily: 'Montserrat',
-    fontSize: '0.9em',
-    '&:nth-of-type(1)': {
-      textAlign: 'left'
-    },
-    '&:nth-of-type(2)': {
-      width: '100%',
-    },
-    '&:nth-of-type(3)': {
-      textAlign: 'right'
-    },
-    '& p': {
-      color: '#fafafa',
-    },
+const FooterContainer = styled(Container)({
+  '&.MuiContainer-root': {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    width: '100%',
+    padding: '10px',
+    fontSize: '0.8em',
+    color: '#fafafa',
     '& > button': {
       textDecoration: 'underline',
       '&.hidden': {
@@ -47,7 +34,7 @@ const StyledTableCell = styled(TableCell)({
       color: '#fafafa',
       textTransform: 'none',
       '&.active__btn': {
-        padding: '2px',
+        padding: '0 3px',
         border: '1px solid #fafafa',
         borderRadius: '4px',
       },
@@ -60,12 +47,11 @@ const StyledTableCell = styled(TableCell)({
 
 const FiltersContainer = styled(Container)({
   '&.MuiContainer-root': {
+    alignSelf: 'center',
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
     gap: '10px',
-    width: '100%',
-  },
+    width: 'auto'
+  }
 })
 
 const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
@@ -89,21 +75,15 @@ const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
   const clearSelectedBtn = useRef<HTMLButtonElement | null>(null)
 
   return (
-    <TableRow>
-      <StyledTableCell colSpan={2}>
+    <FooterContainer>
         <p>{`${activeCounter} tasks left`}</p>
-      </StyledTableCell>
-      <StyledTableCell>
         <FiltersContainer>
           <Button ref={active} data-filter="All" onClick={changeFilter}>All</Button>
           <Button data-filter="Active" onClick={changeFilter}>Active</Button>
           <Button data-filter="Finished" onClick={changeFilter}>Finished</Button>
         </FiltersContainer>
-      </StyledTableCell>
-      <StyledTableCell colSpan={3}>
         <Button ref={clearSelectedBtn} onClick={clearSelected}>Clear completed</Button>
-      </StyledTableCell>
-    </TableRow>
+    </FooterContainer>
   )
 }
 export default Filters

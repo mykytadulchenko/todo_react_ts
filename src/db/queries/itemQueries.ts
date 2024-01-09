@@ -37,7 +37,7 @@ export const itemQueries = {
     },
     DELETE_SELECTED: async (user_id: string) => {
         await mongooseConnect()
-        await Item.deleteMany({ user_id: new ObjectId(user_id) })
+        await Item.deleteMany({ user_id: new ObjectId(user_id), completed: true })
         await mongoose.connection.close()
     }
 }

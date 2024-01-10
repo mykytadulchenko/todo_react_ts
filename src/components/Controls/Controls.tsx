@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import type { ThunkDispatch } from 'redux-thunk'
 import type { IAction, IState, IUser } from '../../interfaces'
 import asyncItemActions from '../../store/actions/itemActions'
-import { getUserSelector } from '../../store/selectors'
+import { getUserSelector, selectAllSelector } from '../../store/selectors'
 
 const OuterContainer = styled(Container)({
   '&.MuiContainer-root': {
@@ -68,14 +68,15 @@ const Controls:FC = () => {
   const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
   const user = useSelector(getUserSelector) as IUser
   const [value, setValue] = useState('')
-  
+  const selectAll = useSelector(selectAllSelector)
+
   const addItem = (e: KeyboardEvent) => {
     if(e.key !== 'Enter') return
     dispatch(asyncItemActions.addNewItem(user.id as string, value))
     setValue('')
   }
   const selectAllHandler = () => {
-    dispatch(asyncItemActions.processSelectAll(user.id as string))
+    dispatch(asyncItemActions.processSelectAll(user.id as string, selectAll))
   }
 
   return (

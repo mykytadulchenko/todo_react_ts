@@ -1,11 +1,21 @@
 import { StoreEnhancer, applyMiddleware, combineReducers, legacy_createStore } from "redux"
-import { ThunkMiddleware, thunk } from "redux-thunk"
 import type { IAction, IState } from "../interfaces"
 import itemReducer from "./reducers/itemReducer"
 import userReducer from "./reducers/userReducer"
+import type { SagaMiddleware } from "redux-saga"
+import createSagaMiddleware from "redux-saga"
+import { usersWatcher } from "./actions/userActions"
+import { all } from "redux-saga/effects"
+import { itemsWatcher } from "./actions/itemActions"
 
+const sagaMiddleware = createSagaMiddleware()
 const rootReducer = combineReducers({user: userReducer, items: itemReducer})
+const store = legacy_createStore<IState, IAction, StoreEnhancer, SagaMiddleware>(rootReducer, applyMiddleware(sagaMiddleware))
 
-const store = legacy_createStore<IState, IAction, StoreEnhancer, ThunkMiddleware>(rootReducer, applyMiddleware(thunk))
+function* rootWatcher() {
+    yield all([usersWatcher(),itemsWatcher()])
+}
+
+sagaMiddleware.run(rootWatcher)
 
 export default store

@@ -14,7 +14,14 @@ const StyledInput = styled(TextField)({
     borderRadius:' 8px',
   },
   '& .MuiInputBase-input': {
-    fontFamily: 'Montserrat'
+    fontFamily: 'Montserrat',
+    '&:-internal-autofill-selected': {
+      backgroundColor: 'red !important',
+      boxShadow: '0 0 0 30px rgba(250, 250, 250, 0.2) inset !important',
+      webkitTextFillColor: 'rgba(56, 56, 56, 1) !important',
+      oTextFillColor: 'rgba(56, 56, 56, 1) !important',
+      mozTextFillColor: 'rgba(56, 56, 56, 1) !important',
+    }
   },
   '.MuiOutlinedInput-root': {
     '& fieldset': {

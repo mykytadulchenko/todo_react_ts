@@ -1,25 +1,27 @@
-import { List, styled } from '@mui/material'
+import { Table, TableBody, TableContainer, styled } from '@mui/material'
 import type { FC } from 'react'
 import type { IScreenComponent } from '../../interfaces/components'
 import ListItem from '../ListItem/ListItem'
 
-const ItemList = styled(List)({
-  '&.MuiList-root': {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-    padding: '5px 0',
-    height: '100%',
-    maxHeight: '100%',
-    overflowY: 'scroll',
+const StyledTable = styled(Table)({
+  '&.MuiTable-root': {
+    width: '100%',
+    borderCollapse: 'separate', 
+    borderSpacing: '10px'
   }
 })
 
 const Screen:FC<IScreenComponent> = ({data}) => {
   return (
-      data.map(item => 
-        <ListItem key={item._id} itemData={item}/>
-      )
+    <TableContainer>
+      <StyledTable>
+        <TableBody>
+        {data.map(item => 
+          <ListItem key={item._id} itemData={item}/>
+        )}
+        </TableBody>
+      </StyledTable>
+    </TableContainer>
   )
 }
 export default Screen

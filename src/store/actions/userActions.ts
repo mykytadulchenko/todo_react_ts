@@ -10,7 +10,7 @@ export const LOG_OUT = 'LOG_OUT'
 const PATH = '/api/users'
 
 const usersWorkers = {
-  signUp: function* (action: IAction): Generator<any, any, AxiosResponse> {
+  signUp: function* (action: IAction): Generator<any, void, AxiosResponse<IUser>> {
     try {
       const response = yield axiosResolver.post(`${PATH}/sign-up`, action.payload)
       yield put(userActions.setCurrentUser(response.data))
@@ -20,7 +20,7 @@ const usersWorkers = {
       }
     }
   },
-  signIn: function* (action: IAction): Generator<any, any, AxiosResponse> {
+  signIn: function* (action: IAction): Generator<any, void, AxiosResponse> {
     try {
       const response = yield axiosResolver.post(`${PATH}/sign-up`, action.payload)
       yield put(userActions.setCurrentUser(response.data))

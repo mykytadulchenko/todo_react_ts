@@ -16,7 +16,7 @@ export const SELECT_ALL = 'SELECT_ALL'
 const PATH = '/api/todos'
 
 const itemsWorkers = {
-    fetchData: function* (action: IAction):Generator<any, any, AxiosResponse> {
+    fetchData: function* (action: IAction):Generator<any, void, AxiosResponse> {
       try {
         const response = yield axiosResolver.get(`${PATH}/${action.payload}`)
         yield put(itemActions.setData(response.data))
@@ -26,7 +26,7 @@ const itemsWorkers = {
         }
       }
     },
-    addNewItem: function* (action: IAction):Generator<any, any, AxiosResponse> {
+    addNewItem: function* (action: IAction):Generator<any, void, AxiosResponse> {
       try {
         const response = yield axiosResolver.post(PATH, { ...action.payload })
         yield put(itemActions.setData(response.data))
@@ -36,7 +36,7 @@ const itemsWorkers = {
         }
       } 
     },
-    editItem: function* (action: IAction):Generator<any, any, AxiosResponse> {
+    editItem: function* (action: IAction):Generator<any, void, AxiosResponse> {
       try {
         const response = yield axiosResolver.patch(`${PATH}/${action.payload._id}`, action.payload)
         yield put(itemActions.setData(response.data))
@@ -46,7 +46,7 @@ const itemsWorkers = {
         }
       } 
     },
-    removeItem: function* (action: IAction):Generator<any, any, AxiosResponse> {
+    removeItem: function* (action: IAction):Generator<any, void, AxiosResponse> {
       try {
         const response = yield axiosResolver.delete(`${PATH}/${action.payload._id}`, { data: action.payload })
         yield put(itemActions.setData(response.data))
@@ -56,7 +56,7 @@ const itemsWorkers = {
         }
       }
     }, 
-    processSelectAll: function* (action: IAction):Generator<any, any, AxiosResponse> {
+    processSelectAll: function* (action: IAction):Generator<any, void, AxiosResponse> {
       try {
         const response = yield axiosResolver.put(`${PATH}/bulk-select`, { ...action.payload })
         yield put(itemActions.selectAll(response.data))
@@ -66,7 +66,7 @@ const itemsWorkers = {
         }
       }
     },
-    processRemoveSelected: function* (action: IAction):Generator<any, any, AxiosResponse> {
+    processRemoveSelected: function* (action: IAction):Generator<any, void, AxiosResponse> {
       try {
         const response = yield axiosResolver.put(`${PATH}/bulk-remove`, { ...action.payload })
         yield put(itemActions.setData(response.data))

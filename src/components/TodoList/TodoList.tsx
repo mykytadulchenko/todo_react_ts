@@ -1,4 +1,4 @@
-import { Container, Table, TableBody, TableContainer, TableFooter, TableHead, styled } from '@mui/material'
+import { Container, styled } from '@mui/material'
 import type { FC } from 'react'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,14 +27,6 @@ const LayoutContainer = styled(Container)({
   }
 })
 
-const StyledTable = styled(Table)({
-  '&.MuiTable-root': {
-    width: '100%',
-    borderCollapse: 'separate', 
-    borderSpacing: '10px'
-  }
-})
-
 const TodoList:FC = () => {
   const data = useSelector(getDataSelector)
   const filter = useSelector(filterSelector)
@@ -58,22 +50,13 @@ const TodoList:FC = () => {
   return (
     <LayoutContainer>
       <Controls/>
-      <TableContainer>
-      <StyledTable>
-        <TableBody>
-          {data.length > 0 
-          ?
-          <Screen data={filteredData}/>
-          : null}
-        </TableBody>
-      </StyledTable>
-      </TableContainer>
-    {data.length > 0
-    ?
-    <Filters activeCounter={activeCounter} isAnyFinished={data.length !== activeCounter}/>
-    :
-    null
-    }
+      {data.length > 0 
+      ?
+      <>
+        <Screen data={filteredData}/>
+        <Filters activeCounter={activeCounter} isAnyFinished={data.length !== activeCounter}/>
+      </>
+      : null}
     </LayoutContainer>
   )
 }

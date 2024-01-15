@@ -1,6 +1,6 @@
 import { Table, TableBody, TableContainer, styled } from '@mui/material'
 import type { FC } from 'react'
-import type { IScreenComponent } from '../../interfaces/components'
+import type { IScreenComponent } from '../../types/components'
 import ListItem from '../ListItem/ListItem'
 
 const StyledTable = styled(Table)({
@@ -17,7 +17,7 @@ const Screen:FC<IScreenComponent> = ({data}) => {
       <StyledTable>
         <TableBody>
         {data.map(item => 
-          <ListItem key={item._id} itemData={item}/>
+          <ListItem key={item.id} itemData={item}/>
         )}
         </TableBody>
       </StyledTable>

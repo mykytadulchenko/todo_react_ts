@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios"
 import { put, takeEvery } from "redux-saga/effects"
-import type { IAction, IUser } from "../../interfaces"
+import type { IAction, IUser } from "../../types"
 import axiosResolver from "./api/axiosResolver"
 
 const ASYNC_SIGNUP_USER = 'ASYNC_SIGNUP_USER'
@@ -10,9 +10,9 @@ export const LOG_OUT = 'LOG_OUT'
 const PATH = '/api/users'
 
 const usersWorkers = {
-  signUp: function* (action: IAction): Generator<any, void, AxiosResponse<IUser>> {
+  signUp: function* (action: IAction): Generator<any, void, AxiosResponse<string>> {
     try {
-      const response = yield axiosResolver.post(`${PATH}/sign-up`, action.payload)
+      const response = yield axiosResolver.post(`${ PATH }/sign-up`, action.payload)
       yield put(userActions.setCurrentUser(response.data))
     } catch(err: any) {
       if(axios.isAxiosError(err)) {
@@ -20,9 +20,9 @@ const usersWorkers = {
       }
     }
   },
-  signIn: function* (action: IAction): Generator<any, void, AxiosResponse> {
+  signIn: function* (action: IAction): Generator<any, void, AxiosResponse<string>> {
     try {
-      const response = yield axiosResolver.post(`${PATH}/sign-up`, action.payload)
+      const response = yield axiosResolver.post(`${ PATH }/sign-in`, action.payload)
       yield put(userActions.setCurrentUser(response.data))
     } catch(err: any) {
       if(axios.isAxiosError(err)) {
@@ -33,13 +33,13 @@ const usersWorkers = {
 }
 
 export const asyncUserActions = {
-  signUp: (user: IUser) => ({type: ASYNC_SIGNUP_USER, payload: user}),
-  signIn: (user: IUser) => ({type: ASYNC_SIGNIN_USER, payload: user})
+  signUp: (user: IUser) => ({ type: ASYNC_SIGNUP_USER, payload: user }),
+  signIn: (user: IUser) => ({ type: ASYNC_SIGNIN_USER, payload: user })
 }
 
 export const userActions = {
-    setCurrentUser: (user: IUser) => ({type: SET_USER, payload: user}),
-    logOut: () => ({type: LOG_OUT})
+    setCurrentUser: (token: string) => ({ type: SET_USER, payload: token }),
+    logOut: () => ({ type: LOG_OUT })
 }
 
 export function* usersWatcher() {

@@ -1,11 +1,12 @@
 import { Button, Checkbox, Container, ListItem as MUIListItem, TableCell, TableRow, TextField, Typography, styled } from '@mui/material'
 import type { FC, KeyboardEvent } from 'react'
 import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import type { ThunkDispatch } from 'redux-thunk'
-import type { IAction, IListItem, IState } from "../../interfaces"
-import type { IListItemComponent } from "../../interfaces/components"
+import type { IAction, IListItem, IState, IUser } from "../../types"
+import type { IListItemComponent } from "../../types/components"
 import asyncItemActions from '../../store/actions/itemActions'
+import { getUserSelector } from '../../store/selectors'
 
 const StyledTableRow = styled(TableRow)({
   '&.MuiTableRow-root': {
@@ -99,13 +100,14 @@ const StyledInput = styled(TextField)({
 const ListItem:FC<IListItemComponent> = ({ itemData }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(itemData.value)
+  const user = useSelector(getUserSelector)!
   const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
 
-  const checkItem = (item: IListItem) => dispatch(asyncItemActions.editItem({...item, completed: !item.completed}))
-  const removeItem = (item: IListItem) => dispatch(asyncItemActions.removeItem(item))
+  const checkItem = (item: IListItem) => dispatch(asyncItemActions.editItem({...item, completed: !item.completed}, user.token!))
+  const removeItem = (item: IListItem) => dispatch(asyncItemActions.removeItem(item, user.token!))
   const edit = (e: KeyboardEvent) => {
     if (e.key !== "Enter") return
-    dispatch(asyncItemActions.editItem({...itemData, value}))
+    dispatch(asyncItemActions.editItem({...itemData, value}, user.token!))
     setIsEditing(false)
   }
 

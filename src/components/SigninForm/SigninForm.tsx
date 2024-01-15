@@ -3,8 +3,8 @@ import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import type { ThunkDispatch } from "redux-thunk"
-import { IAction, ISignin, IState } from "../../interfaces"
-import type { ISigninForm } from "../../interfaces/components"
+import { IAction, ISignin, IState } from "../../types"
+import type { ISigninForm } from "../../types/components"
 import styles from './SigninForm.module.css'
 import asyncUserActions from "../../store/actions/userActions"
 import { Button, TextField, styled } from "@mui/material"
@@ -15,13 +15,7 @@ const StyledInput = styled(TextField)({
   },
   '& .MuiInputBase-input': {
     fontFamily: 'Montserrat',
-    '&:-internal-autofill-selected': {
-      backgroundColor: 'red !important',
-      boxShadow: '0 0 0 30px rgba(250, 250, 250, 0.2) inset !important',
-      webkitTextFillColor: 'rgba(56, 56, 56, 1) !important',
-      oTextFillColor: 'rgba(56, 56, 56, 1) !important',
-      mozTextFillColor: 'rgba(56, 56, 56, 1) !important',
-    }
+    backgroundClip: 'text !important'
   },
   '.MuiOutlinedInput-root': {
     '& fieldset': {

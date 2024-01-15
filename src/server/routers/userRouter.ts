@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt'
 import { configDotenv } from 'dotenv'
 import express from 'express'
-import { userQueries } from '../db/queries/userQueries.js'
-import type { IUser } from '../interfaces/index'
+import { userQueries } from '../../db/typeorm/queries/userQueries.js'
+import type { IUser } from '../../types/'
+import jwtResolver from '../auth/jwtResolver.js'
 configDotenv()
 
 const userRouter = express.Router()
@@ -27,12 +28,14 @@ userRouter.post('/sign-in', async (request, response, next) => {
             return
         }
         const compareResult = await passwordCompare(password!, user.password!)
-        if(user.login === login && compareResult) {
+        if(user.login === login && compareResult) { 
             const userObject = {
                 id: user.id,
                 login: user.login
             }
-            response.json(userObject)
+            const { accessToken, refreshToken } = jwtResolver.generateTokens(userObject)
+            await jwtResolver.setTokens(userObject.id, accessToken, refreshToken)
+            response.json(accessToken)
         } else {
             response.json(null)
         }
@@ -46,7 +49,9 @@ userRouter.post('/sign-up', async (request, response, next) => {
         const {login, email, password} = request.body as IUser
         const hashedPass = await passwordHasher(password!)
         const user = await userQueries.SET_USER_QUERY(login, email!, hashedPass)
-        response.json(user)
+        const { accessToken, refreshToken } = jwtResolver.generateTokens(user)
+        await jwtResolver.setTokens(user.id, accessToken, refreshToken)
+        response.json(accessToken)
     } catch(err) {
         next(err)
     }

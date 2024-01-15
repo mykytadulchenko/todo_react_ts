@@ -3,7 +3,7 @@ import type { FC, KeyboardEvent } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { ThunkDispatch } from 'redux-thunk'
-import type { IAction, IState, IUser } from '../../interfaces'
+import type { IAction, IState, IUser } from '../../types'
 import asyncItemActions from '../../store/actions/itemActions'
 import { getUserSelector, selectAllSelector } from '../../store/selectors'
 
@@ -72,11 +72,11 @@ const Controls:FC = () => {
 
   const addItem = (e: KeyboardEvent) => {
     if(e.key !== 'Enter') return
-    dispatch(asyncItemActions.addNewItem(user.id as string, value))
+    dispatch(asyncItemActions.addNewItem(user as IUser, value))
     setValue('')
   }
   const selectAllHandler = () => {
-    dispatch(asyncItemActions.processSelectAll(user.id as string, selectAll))
+    dispatch(asyncItemActions.processSelectAll(user as IUser, selectAll))
   }
 
   return (

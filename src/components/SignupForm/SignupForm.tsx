@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form"
 import type { SubmitHandler } from 'react-hook-form'
 import styles from './SignupForm.module.css'
 import { useMemo, type FC } from "react"
-import type { ISignupForm } from "../../interfaces/components"
-import type { IAction, ISignup, IState } from "../../interfaces"
+import type { ISignupForm } from "../../types/components"
+import type { IAction, ISignup, IState } from "../../types"
 import { useDispatch } from "react-redux"
 import type { ThunkDispatch } from "redux-thunk"
 import validationSignUpSchema from "../../yup/schemes/validationSignUp"
@@ -16,7 +16,8 @@ const StyledInput = styled(TextField)({
     borderRadius:' 8px',
   },
   '& .MuiInputBase-input': {
-    fontFamily: 'Montserrat'
+    fontFamily: 'Montserrat',
+    backgroundClip: 'text !important'
   },
   '.MuiOutlinedInput-root': {
     '& fieldset': {
@@ -37,7 +38,6 @@ const StyledInput = styled(TextField)({
         color: '#6988bf'
       }
     }
-  
 })
 
 const StyledButton = styled(Button)({

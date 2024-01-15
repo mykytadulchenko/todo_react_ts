@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { ThunkDispatch } from 'redux-thunk'
-import type { IAction, IUser } from '../../interfaces'
+import type { IAction, IUser } from '../../types'
 import actions from '../../store/actions/itemActions'
 import { filterSelector, getDataSelector, getUserSelector } from '../../store/selectors'
 import Controls from '../Controls/Controls'
@@ -34,7 +34,7 @@ const TodoList:FC = () => {
   const dispatch = useDispatch<ThunkDispatch<IAction, any, any>>()
 
   useEffect(() => {
-    dispatch(actions.fetchData(user.id as string))
+    dispatch(actions.fetchData(user))
   }, [])
 
   const activeCounter = data.reduce((acc, el) => el.completed ? acc : ++acc, 0)

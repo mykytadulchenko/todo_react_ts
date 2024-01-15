@@ -1,5 +1,5 @@
 import { StoreEnhancer, applyMiddleware, combineReducers, legacy_createStore } from "redux"
-import type { IAction, IState } from "../interfaces"
+import type { IAction, IState } from "../types"
 import itemReducer from "./reducers/itemReducer"
 import userReducer from "./reducers/userReducer"
 import type { SagaMiddleware } from "redux-saga"

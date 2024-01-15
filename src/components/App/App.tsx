@@ -5,7 +5,7 @@ import { userActions } from "../../store/actions/userActions"
 import { getAuthStatus, getUserSelector } from "../../store/selectors"
 import LoginForm from "../Login/Login"
 import TodoList from "../TodoList/TodoList"
-import type { IAction, IState, IUser } from "../../interfaces"
+import type { IAction, IState, IUser } from "../../types"
 import { ThunkDispatch } from "redux-thunk"
 
 const AppContainer = styled(Container)({
@@ -65,9 +65,9 @@ function App() {
   const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
 
   useEffect(() => {
-    const user = localStorage.getItem('currentUser')
-    if(user) {
-      dispatch(userActions.setCurrentUser(JSON.parse(user)))
+    const token = localStorage.getItem('auth_token')
+    if(token) {
+      dispatch(userActions.setCurrentUser(token))
     }
   }, [])
 

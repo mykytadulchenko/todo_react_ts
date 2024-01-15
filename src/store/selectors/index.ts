@@ -1,4 +1,4 @@
-import type { IListItem, IState, IUser } from "../../interfaces"
+import type { IListItem, IState, IUser } from "../../types"
 
 export const getDataSelector = (state: IState):Array<IListItem> => state.items.data
 export const selectAllSelector = (state: IState):boolean => state.items.selectAll

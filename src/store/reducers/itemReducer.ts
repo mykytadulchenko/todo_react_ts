@@ -1,4 +1,4 @@
-import type { IAction, IItemState } from "../../interfaces"
+import type { IAction, IItemState } from "../../types"
 import { SELECT_ALL, SET_DATA, SET_FILTER } from "../actions/itemActions"
 
 const itemState: IItemState = {

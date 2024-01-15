@@ -1,5 +1,5 @@
 export interface IListItem {
-    _id: string;
+    id: string;
     value: string;
     completed: boolean;
     created_at: string;
@@ -10,6 +10,7 @@ export interface IListItem {
 export interface IUserState {
     isAuth: boolean
     currentUser: IUser | null
+    token: string | null
 }
 
 export interface IItemState {
@@ -43,4 +44,5 @@ export interface IUser {
     login: string
     email?: string
     password?: string
+    token?: string
 }

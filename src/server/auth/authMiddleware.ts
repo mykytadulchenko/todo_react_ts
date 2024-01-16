@@ -16,17 +16,14 @@ export const authMiddleware = async (request: Request, response: Response, next:
                 const decodedData = jwtResolver.decodePayload(token!)
                 const tokens = await jwtResolver.getTokens(decodedData.id)
                 jwtResolver.verifyToken(tokens.refresh_token)
-                const { accessToken, refreshToken } = jwtResolver.generateTokens({ id: decodedData.id, login: decodedData.login})
-                await jwtResolver.setTokens(decodedData.id, accessToken, refreshToken)
-                request.token = accessToken
-                next()
+                response.status(403).send()
             } else {
                 console.log(err)
-                response.status(403).json('Bad authorization!')
+                response.status(401).json('Bad authorization!')
             }
         } catch(err: any) {
             console.log(err)
-            response.status(403).json('User not authorized!')
+            response.status(401).json('User not authorized!')
         }  
     }
 }

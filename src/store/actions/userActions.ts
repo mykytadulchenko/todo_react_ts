@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios"
 import { put, takeEvery } from "redux-saga/effects"
 import type { IAction, IUser } from "../../types"
-import axiosResolver from "./api/axiosResolver"
+import axiosUsersResolvers from "./api/axiosResolvers/userResolvers"
 
 const ASYNC_SIGNUP_USER = 'ASYNC_SIGNUP_USER'
 const ASYNC_SIGNIN_USER = 'ASYNC_SIGNIN_USER'
@@ -11,24 +11,12 @@ const PATH = '/api/users'
 
 const usersWorkers = {
   signUp: function* (action: IAction): Generator<any, void, AxiosResponse<string>> {
-    try {
-      const response = yield axiosResolver.post(`${ PATH }/sign-up`, action.payload)
-      yield put(userActions.setCurrentUser(response.data))
-    } catch(err: any) {
-      if(axios.isAxiosError(err)) {
-        console.log(err.message)
-      }
-    }
+    const response = yield axiosUsersResolvers.post(`${ PATH }/sign-up`, action.payload)
+    yield put(userActions.setCurrentUser(response.data))
   },
   signIn: function* (action: IAction): Generator<any, void, AxiosResponse<string>> {
-    try {
-      const response = yield axiosResolver.post(`${ PATH }/sign-in`, action.payload)
-      yield put(userActions.setCurrentUser(response.data))
-    } catch(err: any) {
-      if(axios.isAxiosError(err)) {
-        console.log(err.message)
-      }
-    }
+    const response = yield axiosUsersResolvers.post(`${ PATH }/sign-in`, action.payload)
+    yield put(userActions.setCurrentUser(response.data))
   }
 }
 

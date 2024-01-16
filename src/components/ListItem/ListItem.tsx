@@ -100,14 +100,13 @@ const StyledInput = styled(TextField)({
 const ListItem:FC<IListItemComponent> = ({ itemData }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(itemData.value)
-  const user = useSelector(getUserSelector)!
   const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
 
-  const checkItem = (item: IListItem) => dispatch(asyncItemActions.editItem({...item, completed: !item.completed}, user.token!))
-  const removeItem = (item: IListItem) => dispatch(asyncItemActions.removeItem(item, user.token!))
+  const checkItem = (item: IListItem) => dispatch(asyncItemActions.editItem({...item, completed: !item.completed}))
+  const removeItem = (item: IListItem) => dispatch(asyncItemActions.removeItem(item))
   const edit = (e: KeyboardEvent) => {
     if (e.key !== "Enter") return
-    dispatch(asyncItemActions.editItem({...itemData, value}, user.token!))
+    dispatch(asyncItemActions.editItem({...itemData, value}))
     setIsEditing(false)
   }
 

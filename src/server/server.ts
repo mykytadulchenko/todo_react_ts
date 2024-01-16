@@ -6,12 +6,20 @@ import type { NextFunction, Request, Response } from 'express'
 import itemRouter from './routers/itemRouter.js'
 import userRouter from './routers/userRouter.js'
 import { authMiddleware } from './auth/authMiddleware.js'
+import authRouter from './routers/authRouter.js'
+import refreshMiddleware from './auth/refreshMiddleware.js'
 
 configDotenv()
 const PORT = process.env.PORT || 3001
 const server = express()
-server.use(cors())
+
+const corsConfig = {
+    exposedHeaders: 'Authorization',
+  }
+
+server.use(cors(corsConfig))
 server.use(bodyParser.json())
+server.use('/api/auth', refreshMiddleware, authRouter)
 server.use('/api/users', userRouter)
 server.use('/api/todos', authMiddleware, itemRouter)
 server.use((err: any, _: Request, response: Response, next: NextFunction) => {

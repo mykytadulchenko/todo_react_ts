@@ -1,3 +1,4 @@
+import { type JwtPayload, jwtDecode } from "jwt-decode"
 import type { IAction, IUserState } from "../../types"
 import { LOG_OUT, SET_USER } from "../actions/userActions"
 
@@ -12,11 +13,10 @@ const userReducer = (state: IUserState = userState, action: IAction) => {
         case SET_USER:
             if(!action.payload) return state
             localStorage.setItem('auth_token', action.payload)
-            const decodedData = JSON.parse(atob(action.payload.split('.')[1]))
+            const decodedData = jwtDecode<JwtPayload>(action.payload)
             const currentUser = {
                 id: decodedData.id,
-                login: decodedData.login,
-                token: action.payload
+                login: decodedData.login
             }
             return {...state, currentUser, isAuth: true}
         case LOG_OUT: 

@@ -18,6 +18,7 @@ axiosItemsResolver.interceptors.response.use(null, async (error) => {
     if(error.response?.status === 403) {
         const request = error.config
         const response = await axiosAuthResolver.get('/api/auth')
+        if(response.status !== 200) return response
         localStorage.setItem('auth_token', response.headers.authorization.split(' ')[1])
         const requestResult = await axiosItemsResolver(request)
         return requestResult

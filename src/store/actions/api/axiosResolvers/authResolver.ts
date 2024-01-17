@@ -1,4 +1,5 @@
 import axios from "axios";
+import { response } from "express";
 
 const axiosAuthResolver = axios.create({
     baseURL: 'http://localhost:3030',
@@ -11,6 +12,10 @@ axiosAuthResolver.interceptors.request.use(request => {
         request.headers.Authorization = `Bearer ${ authToken }`
     }
     return request
+})
+
+axiosAuthResolver.interceptors.response.use(null, error => {
+    return error
 })
 
 export default axiosAuthResolver

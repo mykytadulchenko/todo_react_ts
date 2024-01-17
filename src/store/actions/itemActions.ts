@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { put, takeEvery } from 'redux-saga/effects';
 import type { IAction, IListItem, IUser } from "../../types";
 import axiosItemsResolver from './api/axiosResolvers/itemsResolver';
@@ -16,12 +16,12 @@ export const SELECT_ALL = 'SELECT_ALL'
 const PATH = '/api/todos'
 
 function* workerHandler(request: any, dataAction: any = itemActions.setData):Generator<any, void, AxiosResponse> {
-  const response = yield request
-  if(response.data) {
-    yield put(dataAction(response.data.data))
-  } else {
-    yield put(userActions.logOut())
-  }
+    const response = yield request
+    if(response instanceof AxiosError && response.response!.status === 401) {
+      yield put(userActions.logOut())
+    } else {
+      yield put(dataAction(response.data.data))
+    }
 }
 
 const itemsWorkers = {

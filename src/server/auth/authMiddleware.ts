@@ -11,19 +11,19 @@ export const authMiddleware = async (request: Request, response: Response, next:
         jwtResolver.verifyToken(token)
         next()
     } catch(err: any) {
-        try {
+        // try {
             if(err instanceof jwt.TokenExpiredError) {
-                const decodedData = jwtResolver.decodePayload(token!)
-                const tokens = await jwtResolver.getTokens(decodedData.id)
-                jwtResolver.verifyToken(tokens.refresh_token)
+                // const decodedData = jwtResolver.decodePayload(token!)
+                // const tokens = await jwtResolver.getTokens(decodedData.id)
+                // jwtResolver.verifyToken(tokens.refresh_token)
                 response.status(403).send()
             } else {
-                console.log(err)
-                response.status(401).json('Bad authorization!')
+                //console.log(err)
+                response.status(401).json('User not authorized!')
             }
-        } catch(err: any) {
-            console.log(err)
-            response.status(401).json('User not authorized!')
-        }  
+        // } catch(err: any) {
+        //     //console.log(err)
+        //     response.status(401).json('User not authorized!')
+        // }  
     }
 }

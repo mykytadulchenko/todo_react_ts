@@ -1,72 +1,47 @@
-import { Router, type NextFunction, type Request, type Response } from 'express'
-import { itemQueries } from '../../db/typeorm/queries/itemQueries.js'
-
-const itemRouter = Router()
+import { itemQueries } from "../../db/typeorm/queries/itemQueries.js"
+import { actionTypes, socketActionTypes } from "../../store/actions/actionTypes.js"
+import { type IAction } from "../../types"
+import jwtResolver from "../auth/jwtResolver.js"
 
 const dataRequestHandler = async (id: string) => {
     const data = await itemQueries.GET_ITEMS_QUERY(id)
     return data
 }
 
-itemRouter.get('/:id', async (request: Request, response: Response, next: NextFunction) => {
-    try {
-        const data = await dataRequestHandler(request.params.id)
-        response.json({ data, token: request.token })
-    } catch(err) {
-        next(err)
-    }
-})
-
-itemRouter.post('/', async (request, response, next) => {
-    try {
-        await itemQueries.SET_ITEM_QUERY(request.body.value, false, request.body.userId)
-        const newData = await dataRequestHandler(request.body.userId)
-        response.json({ data: newData, token: request.token })
-    } catch(err) {
-        next(err)
-    }
-})
-
-itemRouter.patch('/:id', async (request, response, next) => {
-    try {
-        const {id, value, completed, user_id} = request.body
-        await itemQueries.EDIT_ITEM_QUERY(value, completed, id)
-        const newData = await dataRequestHandler(user_id)
-        response.json({ data: newData, token: request.token })
-    } catch(err) {
-        next(err)
-    }
-})
-
-itemRouter.delete('/:id', async (request, response, next) => {
-    try {
-        await itemQueries.DELETE_ITEM_QUERY(request.params.id)
-        const newData = await dataRequestHandler(request.body.user_id)
-        response.json({ data: newData, token: request.token })
-    } catch(err) {
-        next(err)
-    }
-})
-
-itemRouter.put('/bulk-select', async (request, response, next) => {
-    try {
-        await itemQueries.SELECT_ALL_QUERY(request.body.selectAll, request.body.userId)
-        const newData = await dataRequestHandler(request.body.userId)
-        response.json({ data: newData, token: request.token })
-    } catch(err) {
-        next(err)
-    }
-})
-
-itemRouter.put('/bulk-remove', async (request, response, next) => {
-    try {
-        await itemQueries.DELETE_SELECTED(request.body.userId)
-        const newData = await dataRequestHandler(request.body.userId)
-        response.json({ data: newData, token: request.token })
-    } catch(err) {
-        next(err)
-    }
-})
-
+const itemRouter = async (action: IAction, token: string, ) => {
+    const payload = jwtResolver.decodePayload(token)
+    switch(action.type) {
+        case socketActionTypes.getData: {
+            const data = await dataRequestHandler(payload.id)
+            return JSON.stringify({action: { type: actionTypes.SET_DATA, payload: data }, token})
+        }
+        case socketActionTypes.addItem: {
+            await itemQueries.SET_ITEM_QUERY(action.payload, false, payload.id)
+            const data = await dataRequestHandler(payload.id)
+            return JSON.stringify({action: { type: actionTypes.SET_DATA, payload: data }, token})
+        }
+        case socketActionTypes.editItem: {
+            const { id, value, completed } = action.payload
+            await itemQueries.EDIT_ITEM_QUERY(value, completed, id)
+            const data = await dataRequestHandler(payload.id)
+            return JSON.stringify({action: { type: actionTypes.SET_DATA, payload: data }, token})
+        }
+        case socketActionTypes.removeItem: {
+            await itemQueries.DELETE_ITEM_QUERY(action.payload.id)
+            const data = await dataRequestHandler(payload.id)
+            return JSON.stringify({action: { type: actionTypes.SET_DATA, payload: data }, token})
+        }
+        case socketActionTypes.selectAll: {
+            await itemQueries.SELECT_ALL_QUERY(action.payload, payload.id)
+            const data = await dataRequestHandler(payload.id)
+            return JSON.stringify({action: { type: actionTypes.SET_DATA, payload: data }, token})
+        }
+        case socketActionTypes.removeSelected: {
+            await itemQueries.DELETE_SELECTED(payload.id)
+            const data = await dataRequestHandler(payload.id)
+            return JSON.stringify({action: { type: actionTypes.SET_DATA, payload: data }, token})
+        }
+    }   
+}
 
 export default itemRouter

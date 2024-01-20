@@ -3,6 +3,7 @@ import { DataSource } from "typeorm"
 import Item from "./entities/Item.js"
 import User from "./entities/User.js"
 import Jwt from "./entities/Jwt.js"
+import store from "../../store/store.js"
 configDotenv()
 
 const dbDataSource = new DataSource({

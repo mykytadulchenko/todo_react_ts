@@ -6,8 +6,8 @@ import type { ThunkDispatch } from "redux-thunk"
 import { IAction, ISignin, IState } from "../../types"
 import type { ISigninForm } from "../../types/components"
 import styles from './SigninForm.module.css'
-import asyncUserActions from "../../store/actions/userActions"
 import { Button, TextField, styled } from "@mui/material"
+import { asyncUserActions } from "../../store/actions/userActions"
 
 const StyledInput = styled(TextField)({
   '& .MuiInputBase-root': {

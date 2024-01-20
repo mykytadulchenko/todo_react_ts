@@ -3,12 +3,12 @@ import type { FC } from 'react'
 import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { ThunkDispatch } from 'redux-thunk'
-import type { IAction, IUser } from '../../types'
-import actions from '../../store/actions/itemActions'
-import { filterSelector, getDataSelector, getUserSelector } from '../../store/selectors'
+import { getfilterSelector, getDataSelector, getUserSelector } from '../../store/selectors'
+import type { IAction, IState, IUser } from '../../types'
 import Controls from '../Controls/Controls'
 import Filters from '../Filters/Filters'
 import Screen from '../Screen/Screen'
+import { asyncItemActions } from '../../store/actions/itemActions'
 
 const LayoutContainer = styled(Container)({
   '&.MuiContainer-root': {
@@ -29,12 +29,10 @@ const LayoutContainer = styled(Container)({
 
 const TodoList:FC = () => {
   const data = useSelector(getDataSelector)
-  const filter = useSelector(filterSelector)
-  const user = useSelector(getUserSelector) as IUser
-  const dispatch = useDispatch<ThunkDispatch<IAction, any, any>>()
+  const filter = useSelector(getfilterSelector)
 
   useEffect(() => {
-    dispatch(actions.fetchData(user))
+    asyncItemActions.getData()
   }, [])
 
   const activeCounter = data.reduce((acc, el) => el.completed ? acc : ++acc, 0)

@@ -1,5 +1,5 @@
 import type { IAction, IItemState } from "../../types"
-import { SELECT_ALL, SET_DATA, SET_FILTER } from "../actions/itemActions"
+import { actionTypes } from "../actions/actionTypes"
 
 const itemState: IItemState = {
     data: [],
@@ -9,11 +9,11 @@ const itemState: IItemState = {
 
 const itemReducer = (state: IItemState = itemState, action: IAction) => {
     switch(action.type) {
-        case SET_DATA:
+        case actionTypes.SET_DATA:
             return {...state, data: action.payload}
-        case SET_FILTER:
+        case actionTypes.SET_FILTER:
             return {...state, filter: action.payload}
-        case SELECT_ALL:
+        case actionTypes.SELECT_ALL:
             return {...state, data: action.payload, selectAll: !state.selectAll}
         default: return state
     }

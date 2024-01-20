@@ -1,12 +1,12 @@
 import { Button, Container, Typography, styled } from "@mui/material"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { ThunkDispatch } from "redux-thunk"
 import { userActions } from "../../store/actions/userActions"
 import { getAuthStatus, getUserSelector } from "../../store/selectors"
+import type { IAction, IState, IUser } from "../../types"
 import LoginForm from "../Login/Login"
 import TodoList from "../TodoList/TodoList"
-import type { IAction, IState, IUser } from "../../types"
-import { ThunkDispatch } from "redux-thunk"
 
 const AppContainer = styled(Container)({
   '&.MuiContainer-root': {

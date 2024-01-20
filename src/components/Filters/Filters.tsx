@@ -3,10 +3,10 @@ import type { FC, MouseEvent } from 'react'
 import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { ThunkDispatch } from 'redux-thunk'
+import { asyncItemActions, itemActions } from '../../store/actions/itemActions'
+import { getUserSelector } from '../../store/selectors'
 import type { IAction, IState, IUser } from '../../types'
 import type { IFiltersComponent } from '../../types/components'
-import asyncItemActions, { itemActions } from '../../store/actions/itemActions'
-import { getUserSelector } from '../../store/selectors'
 
 const FooterContainer = styled(Container)({
   '&.MuiContainer-root': {
@@ -57,7 +57,7 @@ const FiltersContainer = styled(Container)({
 const Filters: FC<IFiltersComponent> = ({activeCounter, isAnyFinished}) => {
   const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
   const user = useSelector(getUserSelector) as IUser
-  const clearSelected = () => dispatch(asyncItemActions.processRemoveSelected(user as IUser))
+  const clearSelected = () => asyncItemActions.removeSelected()
   const changeFilter = (e: MouseEvent) => {
     if(active.current) active.current.classList.remove('active__btn')
     active.current = e.target as HTMLButtonElement

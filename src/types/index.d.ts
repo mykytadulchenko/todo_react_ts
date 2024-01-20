@@ -10,7 +10,7 @@ export interface IListItem {
 export interface IUserState {
     isAuth: boolean
     currentUser: IUser | null
-    token: string | null
+    socket: WebSocket | null
 }
 
 export interface IItemState {
@@ -44,5 +44,4 @@ export interface IUser {
     login: string
     email?: string
     password?: string
-    token?: string
 }

@@ -1,11 +1,11 @@
-import { Button, Container, TableCell, TableRow, TextField, styled } from '@mui/material'
+import { Button, Container, TextField, styled } from '@mui/material'
 import type { FC, KeyboardEvent } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { ThunkDispatch } from 'redux-thunk'
+import { getUserSelector, getSelectAllSelector } from '../../store/selectors'
 import type { IAction, IState, IUser } from '../../types'
-import asyncItemActions from '../../store/actions/itemActions'
-import { getUserSelector, selectAllSelector } from '../../store/selectors'
+import { asyncItemActions } from '../../store/actions/itemActions'
 
 const OuterContainer = styled(Container)({
   '&.MuiContainer-root': {
@@ -68,15 +68,15 @@ const Controls:FC = () => {
   const dispatch = useDispatch<ThunkDispatch<IState, any, IAction>>()
   const user = useSelector(getUserSelector) as IUser
   const [value, setValue] = useState('')
-  const selectAll = useSelector(selectAllSelector)
+  const selectAll = useSelector(getSelectAllSelector)
 
   const addItem = (e: KeyboardEvent) => {
     if(e.key !== 'Enter') return
-    dispatch(asyncItemActions.addNewItem(user as IUser, value))
+    asyncItemActions.addItem(value)
     setValue('')
   }
   const selectAllHandler = () => {
-    dispatch(asyncItemActions.processSelectAll(user as IUser, selectAll))
+    asyncItemActions.selectAll(selectAll)
   }
 
   return (

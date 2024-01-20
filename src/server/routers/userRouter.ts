@@ -4,6 +4,7 @@ import express from 'express'
 import { userQueries } from '../../db/typeorm/queries/userQueries.js'
 import type { IUser } from '../../types/'
 import jwtResolver from '../auth/jwtResolver.js'
+import tokenRefresher from '../auth/tokenRefresher.js'
 configDotenv()
 
 const userRouter = express.Router()
@@ -33,9 +34,15 @@ userRouter.post('/sign-in', async (request, response, next) => {
                 id: user.id,
                 login: user.login
             }
-            const { accessToken, refreshToken } = jwtResolver.generateTokens(userObject)
-            await jwtResolver.setTokens(userObject.id, accessToken, refreshToken)
-            response.json(accessToken)
+            const { access_token } = await jwtResolver.getTokens(userObject.id)
+            const token = tokenRefresher(access_token)
+            if(typeof token === 'object') {
+                const { accessToken, refreshToken } = jwtResolver.generateTokens(userObject)
+                await jwtResolver.setTokens(userObject.id, accessToken, refreshToken)
+                response.json(accessToken)
+            } else {
+                response.json(token)
+            }
         } else {
             response.json(null)
         }
@@ -49,9 +56,15 @@ userRouter.post('/sign-up', async (request, response, next) => {
         const {login, email, password} = request.body as IUser
         const hashedPass = await passwordHasher(password!)
         const user = await userQueries.SET_USER_QUERY(login, email!, hashedPass)
-        const { accessToken, refreshToken } = jwtResolver.generateTokens(user)
-        await jwtResolver.setTokens(user.id, accessToken, refreshToken)
-        response.json(accessToken)
+        const { access_token } = await jwtResolver.getTokens(user.id)
+        const token = tokenRefresher(access_token)
+        if(typeof token === 'object') {
+            const { accessToken, refreshToken } = jwtResolver.generateTokens(user)
+            await jwtResolver.setTokens(user.id, accessToken, refreshToken)
+            response.json(accessToken)
+        } else {
+            response.json(token)
+        }
     } catch(err) {
         next(err)
     }

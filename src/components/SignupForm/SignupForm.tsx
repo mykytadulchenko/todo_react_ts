@@ -8,8 +8,8 @@ import type { IAction, ISignup, IState } from "../../types"
 import { useDispatch } from "react-redux"
 import type { ThunkDispatch } from "redux-thunk"
 import validationSignUpSchema from "../../yup/schemes/validationSignUp"
-import asyncUserActions from "../../store/actions/userActions"
 import { Button, TextField, styled } from "@mui/material"
+import { asyncUserActions } from "../../store/actions/userActions"
 
 const StyledInput = styled(TextField)({
   '& .MuiInputBase-root': {
